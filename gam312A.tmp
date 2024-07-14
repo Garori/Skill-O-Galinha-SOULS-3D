@@ -1,0 +1,159 @@
+[gd_scene load_steps=20 format=3 uid="uid://ccf51cx6fqw8w"]
+
+[ext_resource type="Script" path="res://Scripts/game_controller.gd" id="1_a1frb"]
+[ext_resource type="PackedScene" uid="uid://3s2s3mtnmqp" path="res://Prefabs/player.tscn" id="1_x46si"]
+[ext_resource type="Script" path="res://Scripts/bolaInimigo.gd" id="3_kuvyi"]
+[ext_resource type="PackedScene" uid="uid://c4t4y814ln5t8" path="res://Prefabs/objetivo.tscn" id="3_vsbeb"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_koghe"]
+sky_top_color = Color(0.321569, 0.396078, 0.835294, 1)
+sky_horizon_color = Color(0.630392, 0.64127, 0.742074, 1)
+ground_horizon_color = Color(0.630392, 0.64127, 0.742074, 1)
+
+[sub_resource type="Sky" id="Sky_k86uh"]
+sky_material = SubResource("ProceduralSkyMaterial_koghe")
+
+[sub_resource type="Environment" id="Environment_26gkf"]
+background_mode = 2
+sky = SubResource("Sky_k86uh")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_box11"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wnct1"]
+material = SubResource("StandardMaterial3D_box11")
+size = Vector2(100, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k6bre"]
+size = Vector3(100, 0.01, 100)
+
+[sub_resource type="QuadMesh" id="QuadMesh_qr8nd"]
+size = Vector2(100, 3)
+orientation = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oqk02"]
+size = Vector3(0.01, 3, 100)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ct44d"]
+size = Vector2(100, 3)
+orientation = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_qadmc"]
+size = Vector2(100, 3)
+orientation = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_6nigo"]
+size = Vector2(100, 3)
+orientation = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a76gd"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_yaloc"]
+material = SubResource("StandardMaterial3D_a76gd")
+radius = 0.2
+height = 0.4
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6jrb5"]
+radius = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ssk4j"]
+radius = 0.2
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_a1frb")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_26gkf")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.307357, -0.778547, 0.547171, 0, 0.575005, 0.81815, -0.951594, -0.251464, 0.176732, 500, 500, 500)
+shadow_enabled = true
+
+[node name="ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_wnct1")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="ground"]
+collision_mask = 21
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_k6bre")
+
+[node name="Player" parent="." instance=ExtResource("1_x46si")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.617, 43.2573)
+floor_constant_speed = true
+
+[node name="paredeOeste" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 1.5, 0)
+mesh = SubResource("QuadMesh_qr8nd")
+skeleton = NodePath("")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="paredeOeste"]
+collision_mask = 21
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="paredeOeste/StaticBody3D"]
+shape = SubResource("BoxShape3D_oqk02")
+
+[node name="paredeLeste" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 50, 1.5, 0)
+mesh = SubResource("QuadMesh_ct44d")
+skeleton = NodePath("")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="paredeLeste"]
+collision_mask = 21
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="paredeLeste/StaticBody3D"]
+shape = SubResource("BoxShape3D_oqk02")
+
+[node name="paredeSul" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.5, 50)
+mesh = SubResource("QuadMesh_qadmc")
+skeleton = NodePath("")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="paredeSul"]
+collision_mask = 21
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="paredeSul/StaticBody3D"]
+shape = SubResource("BoxShape3D_oqk02")
+
+[node name="paredeNorte" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1.5, -50)
+mesh = SubResource("QuadMesh_6nigo")
+skeleton = NodePath("")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="paredeNorte"]
+collision_mask = 21
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="paredeNorte/StaticBody3D"]
+shape = SubResource("BoxShape3D_oqk02")
+
+[node name="bolaInimigo" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 40.331)
+collision_layer = 4
+collision_mask = 5
+axis_lock_linear_y = true
+axis_lock_angular_y = true
+script = ExtResource("3_kuvyi")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="bolaInimigo"]
+mesh = SubResource("SphereMesh_yaloc")
+
+[node name="bolaArea" type="Area3D" parent="bolaInimigo"]
+collision_layer = 8
+collision_mask = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="bolaInimigo/bolaArea"]
+shape = SubResource("SphereShape3D_6jrb5")
+
+[node name="corpoFísico" type="CollisionShape3D" parent="bolaInimigo"]
+shape = SubResource("SphereShape3D_ssk4j")
+
+[node name="Caixa" parent="." instance=ExtResource("3_vsbeb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.603979, 0.767896, 12.7046)
+
+[connection signal="body_entered" from="bolaInimigo/bolaArea" to="Player" method="_on_bola_area_body_entered"]

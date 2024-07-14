@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://jumho48omen"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r5cpv"]
+disable_ambient_light = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_m0gr6"]
+material = SubResource("StandardMaterial3D_r5cpv")
+flip_faces = true
+
+[node name="estrela" type="OmniLight3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 335.012, 2.11502)
+light_energy = 10.0
+light_size = 1.0
+shadow_enabled = true
+distance_fade_enabled = true
+distance_fade_begin = 0.0
+distance_fade_length = 4096.0
+omni_range = 4096.0
+
+[node name="corpoEstrela" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_m0gr6")
+skeleton = NodePath("../..")

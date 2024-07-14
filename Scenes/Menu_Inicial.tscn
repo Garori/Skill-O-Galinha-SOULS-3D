@@ -1,0 +1,125 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4re2n6xd3kut"]
+
+[ext_resource type="Texture2D" uid="uid://c33r5h3lmki1p" path="res://logo.png" id="1_3l0bs"]
+[ext_resource type="Script" path="res://Scripts/Menu_Inicial.gd" id="1_qqmn2"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_b8yig"]
+_surfaces = [{
+"2d": true,
+"aabb": AABB(-124.5, -106.5, 0, 249, 213, 0),
+"attribute_data": PackedByteArray(0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0),
+"format": 34393296913,
+"index_count": 6,
+"index_data": PackedByteArray(3, 0, 0, 0, 1, 0, 1, 0, 2, 0, 3, 0),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray(0, 0, 249, 66, 0, 0, 213, 66, 0, 0, 249, 194, 0, 0, 213, 66, 0, 0, 249, 194, 0, 0, 213, 194, 0, 0, 249, 66, 0, 0, 213, 194)
+}]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_qqmn2")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+color = Color(0.631373, 0.231373, 1, 1)
+
+[node name="Logo" type="MeshInstance2D" parent="ColorRect"]
+position = Vector2(640, 200)
+scale = Vector2(1.73474, 1.73474)
+mesh = SubResource("ArrayMesh_b8yig")
+texture = ExtResource("1_3l0bs")
+
+[node name="nCaixas" type="Control" parent="ColorRect"]
+anchors_preset = 0
+offset_left = 164.0
+offset_top = 338.0
+offset_right = 317.0
+offset_bottom = 467.0
+
+[node name="Label" type="Label" parent="ColorRect/nCaixas"]
+layout_mode = 0
+offset_right = 144.0
+offset_bottom = 23.0
+text = "Número de caixas:
+"
+
+[node name="inputCaixas" type="LineEdit" parent="ColorRect/nCaixas"]
+layout_mode = 0
+offset_top = 36.0
+offset_right = 67.0625
+offset_bottom = 67.0
+text = "24"
+placeholder_text = "24"
+
+[node name="nBolas" type="Control" parent="ColorRect"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 164.0
+offset_top = 432.0
+offset_right = 317.0
+offset_bottom = 561.0
+
+[node name="Label" type="Label" parent="ColorRect/nBolas"]
+layout_mode = 0
+offset_right = 144.0
+offset_bottom = 23.0
+text = "Número de bolas:
+"
+
+[node name="inputBolas" type="LineEdit" parent="ColorRect/nBolas"]
+layout_mode = 0
+offset_top = 36.0
+offset_right = 67.0625
+offset_bottom = 67.0
+text = "200"
+placeholder_text = "200"
+
+[node name="cdRoll" type="Control" parent="ColorRect"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 164.0
+offset_top = 527.0
+offset_right = 317.0
+offset_bottom = 656.0
+
+[node name="Label" type="Label" parent="ColorRect/cdRoll"]
+layout_mode = 0
+offset_right = 144.0
+offset_bottom = 23.0
+text = "CD do roll (decasegundos):
+"
+
+[node name="inputCdRoll" type="LineEdit" parent="ColorRect/cdRoll"]
+layout_mode = 0
+offset_top = 36.0
+offset_right = 67.0625
+offset_bottom = 67.0
+text = "3"
+placeholder_text = "500"
+
+[node name="Button" type="Button" parent="ColorRect"]
+layout_mode = 0
+offset_left = 816.0
+offset_top = 486.0
+offset_right = 1049.0
+offset_bottom = 571.0
+text = "Jogar!"
+
+[node name="Label" type="Label" parent="ColorRect"]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 640.0
+offset_right = 826.0
+offset_bottom = 663.0
+text = "ESC durante o jogo para voltar para a tela inicial
+"
+
+[connection signal="text_changed" from="ColorRect/nCaixas/inputCaixas" to="." method="_on_input_caixas_text_changed"]
+[connection signal="text_changed" from="ColorRect/nBolas/inputBolas" to="." method="_on_input_bolas_text_changed"]
+[connection signal="text_changed" from="ColorRect/cdRoll/inputCdRoll" to="." method="_on_input_cd_roll_text_changed"]
+[connection signal="pressed" from="ColorRect/Button" to="." method="_on_button_pressed"]

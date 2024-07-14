@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpa5k3jf0ijhc"]
+
+[ext_resource type="Script" path="res://Scripts/vitoria.gd" id="1_3ijrd"]
+
+[node name="Vitoria" type="Node2D"]
+script = ExtResource("1_3ijrd")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 686.0
+offset_top = 299.0
+offset_right = 726.0
+offset_bottom = 322.0
+text = "virotia 
+apreta esc pra jogar devono ou wtv"

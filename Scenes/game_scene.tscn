@@ -1,0 +1,119 @@
+[gd_scene load_steps=13 format=3 uid="uid://ccf51cx6fqw8w"]
+
+[ext_resource type="Script" path="res://Scripts/game_controller.gd" id="1_38cju"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_koghe"]
+sky_top_color = Color(0.321569, 0.396078, 0.835294, 1)
+sky_horizon_color = Color(0.630392, 0.64127, 0.742074, 1)
+ground_horizon_color = Color(0.630392, 0.64127, 0.742074, 1)
+
+[sub_resource type="Sky" id="Sky_k86uh"]
+sky_material = SubResource("ProceduralSkyMaterial_koghe")
+
+[sub_resource type="Environment" id="Environment_26gkf"]
+background_mode = 2
+sky = SubResource("Sky_k86uh")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_box11"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wnct1"]
+material = SubResource("StandardMaterial3D_box11")
+size = Vector2(100, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k6bre"]
+size = Vector3(100, 0.01, 100)
+
+[sub_resource type="QuadMesh" id="QuadMesh_qr8nd"]
+size = Vector2(100, 3)
+orientation = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oqk02"]
+size = Vector3(0.01, 3, 100)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ct44d"]
+size = Vector2(100, 3)
+orientation = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_qadmc"]
+size = Vector2(100, 3)
+orientation = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_6nigo"]
+size = Vector2(100, 3)
+orientation = 0
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_38cju")
+
+[node name="Jogo" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_26gkf")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.307357, -0.778547, 0.547171, 0, 0.575005, 0.81815, -0.951594, -0.251464, 0.176732, 500, 500, 500)
+shadow_enabled = true
+
+[node name="ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_wnct1")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="ground"]
+collision_mask = 21
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_k6bre")
+
+[node name="paredeOeste" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 1.5, 0)
+mesh = SubResource("QuadMesh_qr8nd")
+skeleton = NodePath("")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="paredeOeste"]
+collision_layer = 192
+collision_mask = 20
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="paredeOeste/StaticBody3D"]
+shape = SubResource("BoxShape3D_oqk02")
+
+[node name="paredeLeste" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 50, 1.5, 0)
+mesh = SubResource("QuadMesh_ct44d")
+skeleton = NodePath("")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="paredeLeste"]
+collision_layer = 192
+collision_mask = 20
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="paredeLeste/StaticBody3D"]
+shape = SubResource("BoxShape3D_oqk02")
+
+[node name="paredeSul" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.5, 50)
+mesh = SubResource("QuadMesh_qadmc")
+skeleton = NodePath("")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="paredeSul"]
+collision_layer = 192
+collision_mask = 20
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="paredeSul/StaticBody3D"]
+shape = SubResource("BoxShape3D_oqk02")
+
+[node name="paredeNorte" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1.5, -50)
+mesh = SubResource("QuadMesh_6nigo")
+skeleton = NodePath("")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="paredeNorte"]
+collision_layer = 192
+collision_mask = 20
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="paredeNorte/StaticBody3D"]
+shape = SubResource("BoxShape3D_oqk02")
