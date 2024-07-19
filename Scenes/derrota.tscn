@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqxtxelxa75q"]
+[gd_scene load_steps=8 format=3 uid="uid://dqxtxelxa75q"]
 
 [ext_resource type="Script" path="res://Scripts/derrotaTela.gd" id="1_ojxsd"]
 [ext_resource type="Script" path="res://Scripts/CameraDerrota.gd" id="2_hu27j"]
+[ext_resource type="Script" path="res://Scripts/TextoDerrota.gd" id="3_74x83"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlcni"]
 cull_mode = 1
@@ -20,7 +21,6 @@ metallic_specular = 0.0
 [sub_resource type="TextMesh" id="TextMesh_tu44c"]
 material = SubResource("StandardMaterial3D_7f67r")
 uv2_padding = 0.0
-text = "DERROTA"
 font_size = 127
 pixel_size = 1.0
 depth = 10.0
@@ -44,6 +44,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 
 [node name="Texto" type="MeshInstance3D" parent="."]
 mesh = SubResource("TextMesh_tu44c")
+script = ExtResource("3_74x83")
 
 [node name="Label" type="Label" parent="."]
 anchors_preset = 7

@@ -3,6 +3,7 @@ extends Node3D
 const objetivo = preload("res://Prefabs/objetivo.tscn")
 const inimigo = preload("res://Prefabs/inimigo.tscn")
 const player = preload("res://Prefabs/player.tscn")
+const caixa2D = preload("res://Prefabs/caixa_2d_ui.tscn")
 var nCaixas
 var nBolas
 var cdRoll
@@ -16,14 +17,17 @@ func _ready():
 	var player:Object = player.instantiate()
 	add_child(player)
 	var posicao = generate_spwn_point(player,0)
-	player.position = posicao
+	player.position = posicao 
 	
 	for i in range(GlobalVar.nCaixas):
+		var ui_box:Object = caixa2D.instantiate()
+		$UI/GridContainer.add_child(ui_box)
 		var obj:Object = objetivo.instantiate()
 		add_child(obj)
 		posicao = generate_spwn_point(obj,1)
 		obj.position = posicao
 		obj.rotation = Vector3(0,numero.randf_range(-1, 1),0)
+		obj.ui_box = ui_box
 	
 	for i in range(GlobalVar.nBolas):
 		var obj:Object = inimigo.instantiate()

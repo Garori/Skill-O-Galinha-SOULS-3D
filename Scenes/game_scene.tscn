@@ -117,3 +117,23 @@ collision_mask = 20
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="paredeNorte/StaticBody3D"]
 shape = SubResource("BoxShape3D_oqk02")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="GridContainer" type="GridContainer" parent="UI"]
+layout_direction = 2
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 1265.0
+offset_bottom = 705.0
+grow_horizontal = 0
+grow_vertical = 0
+rotation = 3.14159
+size_flags_horizontal = 0
+size_flags_vertical = 0
+columns = 50

@@ -1,10 +1,9 @@
-extends Node2D
-
+extends Node
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	GlobalVar.nCaixas = $ColorRect/nCaixas/inputCaixas.text
-	GlobalVar.nBolas = $ColorRect/nBolas/inputBolas.text
-	GlobalVar.cdRoll = $ColorRect/cdRoll/inputCdRoll.text
+	GlobalVar.nCaixas = $varsContainer/nCaixas/inputCaixas.text
+	GlobalVar.nBolas = $varsContainer/nBolas/inputBolas.text
+	GlobalVar.cdRoll = $varsContainer/cdRoll/inputCdRoll.text
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 	pass # Replace with function body.
