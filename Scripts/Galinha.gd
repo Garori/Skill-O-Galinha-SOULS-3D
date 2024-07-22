@@ -5,23 +5,40 @@ var SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 @export var sensivity = 300
 var last
-@export var mayTheChickenRoll: bool = true
+@export var mayTheChickenRoll: bool
+@export var mayTheChickenRun: bool
 var aimPressed = false
 #var atacar
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 @onready var defaultCameraPosition = $CameraPivot/Camera3D.position
 @onready var defaultCameraPivotPosition = $CameraPivot.position
+@onready var progressBar:ProgressBar = $statusContainer/ProgressBar
+@onready var unabletoRoll:Label = $statusContainer/unableToRoll
+@onready var unableToRun:Label = $statusContainer/UnableToRun
 const bala = preload("res://Prefabs/bala.tscn")
 var direction
+@export var stamina:float = 100.0
+var modRED = 1*(100-stamina)/100
+var modGREEN = 1*(stamina)/100
+
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _ready():
 	$arma.visible = false
 	#$arma.set_process(false)
-	$arma/leek/armaArea/armaCollision.disabled = true
+	$arma/armaArea/armaCollision.disabled = true
+	#$arma/armaFisico.disabled = true
 	last = "default_esq"
+	mayTheChickenRoll = true
+	mayTheChickenRun = true
+	unabletoRoll.visible = not mayTheChickenRoll
+	unableToRun.visible = not mayTheChickenRun
 	#atacar = false
 
 func _physics_process(delta):
+	
+	if not is_on_floor():
+		velocity.y -= gravity * delta
 	# Add the gravity.
 	#if Input.is_action_just_pressed("aim"):
 		#$CameraPivot/Camera3D.rotation.x = 0
@@ -41,7 +58,6 @@ func _physics_process(delta):
 	#if Input.is_action_pressed("aim"):
 		#aimPressed = true
 		#return
-		
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if Input.is_action_pressed("ui_right"):
 		last = "default_dir"
@@ -50,16 +66,55 @@ func _physics_process(delta):
 	
 	if is_on_floor():
 		$Sprite.animation = last
-		
+	
 	if Input.is_action_just_pressed("ui_attack") and is_on_floor():
 		$arma/animacao.play("attack")
 	
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and mayTheChickenRoll:
+	if Input.is_action_just_pressed("dodge_roll") and is_on_floor() and mayTheChickenRoll:
 		$animacao.play("rolamento")
 		pass
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
+	if Input.is_action_pressed("run") and stamina > 0.5 and mayTheChickenRun and input_dir != Vector2(0,0):
+		SPEED = 10
+		stamina -= 1
+		print_debug(stamina)
+	elif not Input.is_action_pressed("run") or (Input.is_action_pressed("run") and (not mayTheChickenRun or input_dir == Vector2(0,0))):
+		print_debug(input_dir)
+		SPEED = 5
+		if stamina <100:
+			stamina += 0.35
+		if stamina>95:
+			mayTheChickenRun = true
+	#if Input.is_action_just_released("run"):
+		#if stamina<15:
+			#mayTheChickenRun = false
+	if (Input.is_action_just_released("run") and stamina <=30) or stamina<5:
+		mayTheChickenRun = false
+		mayTheChickenRoll = false
+		
+	progressBar.value = stamina
+	unabletoRoll.visible = not mayTheChickenRoll
+	unableToRun.visible = not mayTheChickenRun
+	
+	if stamina<80:
+		mayTheChickenRoll = false
+	elif stamina>=80 and mayTheChickenRun:
+		mayTheChickenRoll = true
+	
+	if stamina <30:
+		modRED = 1
+		modGREEN = 0
+	elif stamina>80:
+		modGREEN = 1
+		modRED = 0
+	else:
+		modRED = 1*(100-stamina)/100
+		modGREEN = 1*(stamina)/100
+		
+	progressBar.modulate = Color(modRED,modGREEN,0)
+	
 	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		$Sprite.play()

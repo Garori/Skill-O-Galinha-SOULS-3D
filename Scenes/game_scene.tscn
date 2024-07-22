@@ -47,8 +47,6 @@ orientation = 0
 [node name="Main" type="Node3D"]
 script = ExtResource("1_38cju")
 
-[node name="Jogo" type="Node3D" parent="."]
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_26gkf")
 
