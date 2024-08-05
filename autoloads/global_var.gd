@@ -3,6 +3,10 @@ extends Node
 var nBolas:int
 var nCaixas:int
 var cdRoll:int
+var staUsage:float
+var staRecover:float
+var walkingSPEED:float
+var runningSPEED:float
 var pontos:int = 0
 var fs = false
 # Called when the node enters the scene tree for the first time.

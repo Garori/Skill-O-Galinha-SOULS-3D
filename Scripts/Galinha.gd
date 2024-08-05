@@ -1,15 +1,17 @@
 extends CharacterBody3D
 
 
-var SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+var SPEED
+@onready var walkingSPEED = GlobalVar.walkingSPEED
+@onready var runningSPEED = GlobalVar.runningSPEED
+@onready var staRecover = GlobalVar.staRecover
+@onready var staUsage = GlobalVar.staUsage
 @export var sensivity = 300
 var last
 @export var mayTheChickenRoll: bool
+
 @export var mayTheChickenRun: bool
 var aimPressed = false
-#var atacar
-# Get the gravity from the project settings to be synced with RigidBody nodes.
 @onready var defaultCameraPosition = $CameraPivot/Camera3D.position
 @onready var defaultCameraPivotPosition = $CameraPivot.position
 @onready var progressBar:ProgressBar = $statusContainer/ProgressBar
@@ -33,6 +35,7 @@ func _ready():
 	mayTheChickenRun = true
 	unabletoRoll.visible = not mayTheChickenRoll
 	unableToRun.visible = not mayTheChickenRun
+	stamina = 100
 	#atacar = false
 
 func _physics_process(delta):
@@ -77,14 +80,14 @@ func _physics_process(delta):
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	if Input.is_action_pressed("run") and stamina > 0.5 and mayTheChickenRun and input_dir != Vector2(0,0):
-		SPEED = 10
-		stamina -= 1
-		print_debug(stamina)
+		SPEED = runningSPEED
+		stamina -= staUsage
+		#print_debug(stamina)
 	elif not Input.is_action_pressed("run") or (Input.is_action_pressed("run") and (not mayTheChickenRun or input_dir == Vector2(0,0))):
 		print_debug(input_dir)
-		SPEED = 5
+		SPEED = walkingSPEED
 		if stamina <100:
-			stamina += 0.35
+			stamina += staRecover
 		if stamina>95:
 			mayTheChickenRun = true
 	#if Input.is_action_just_released("run"):

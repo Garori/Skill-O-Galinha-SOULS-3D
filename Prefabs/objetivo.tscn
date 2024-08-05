@@ -51,6 +51,7 @@ skeleton = NodePath("")
 shape = SubResource("BoxShape3D_3n14w")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("PlaneMesh_dkupj")
 
 [connection signal="area_entered" from="caixaArea" to="." method="_on_caixa_area_area_entered"]

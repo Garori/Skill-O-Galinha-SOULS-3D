@@ -3,7 +3,11 @@ extends Node
 func _ready():
 	GlobalVar.nCaixas = $varsContainer/nCaixas/inputCaixas.text
 	GlobalVar.nBolas = $varsContainer/nBolas/inputBolas.text
-	GlobalVar.cdRoll = $varsContainer/cdRoll/inputCdRoll.text
+	#GlobalVar.cdRoll = $varsContainer/cdRoll/inputCdRoll.text
+	GlobalVar.walkingSPEED = $varsContainer/walkingSPEED/inputWalkingSPEED.text
+	GlobalVar.runningSPEED = $varsContainer/runningSPEED/inputRunningSPEED.text
+	GlobalVar.staRecover = $varsContainer/staRecover/inputStaRecover.text
+	GlobalVar.staUsage = $varsContainer/staUsage/inputStaUsage.text
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 	pass # Replace with function body.
@@ -23,9 +27,8 @@ func _on_input_bolas_text_changed(new_text):
 	
 	pass # Replace with function body.
 
-func _on_input_cd_roll_text_changed(new_text):
-	GlobalVar.cdRoll = int(new_text)
-	pass # Replace with function body.
+
+
 
 
 func _on_button_pressed():
@@ -51,3 +54,19 @@ func _input(event):
 			#$CameraPivot.rotation.x -= event.axis_value*10/sensivity
 			#$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-65),deg_to_rad(0))
 		
+
+
+func _on_input_sta_recover_text_changed(new_text):
+	GlobalVar.staRecover = float(new_text)
+
+
+func _on_input_sta_usage_text_changed(new_text):
+	GlobalVar.staUsage = float(new_text)
+
+
+func _on_input_walking_speed_text_changed(new_text):
+	GlobalVar.walkingSPEED = float(new_text)
+
+
+func _on_input_running_speed_text_changed(new_text):
+	GlobalVar.runningSPEED = float(new_text)

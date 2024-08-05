@@ -66,9 +66,9 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 126.0
-offset_top = -121.0
-offset_right = 357.0
-offset_bottom = 137.0
+offset_top = -225.0
+offset_right = 354.0
+offset_bottom = 316.0
 grow_vertical = 2
 
 [node name="nCaixas" type="Control" parent="varsContainer"]
@@ -109,27 +109,83 @@ offset_bottom = 67.0
 text = "200"
 placeholder_text = "200"
 
-[node name="cdRoll" type="Control" parent="varsContainer"]
-visible = false
+[node name="staRecover" type="Control" parent="varsContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="varsContainer/cdRoll"]
+[node name="Label" type="Label" parent="varsContainer/staRecover"]
 layout_mode = 0
 offset_right = 144.0
 offset_bottom = 23.0
-text = "CD do roll (decasegundos):
+text = "Velocidade de recuperação da sstamina:
 "
 
-[node name="inputCdRoll" type="LineEdit" parent="varsContainer/cdRoll"]
+[node name="inputStaRecover" type="LineEdit" parent="varsContainer/staRecover"]
 layout_mode = 0
 offset_top = 36.0
 offset_right = 67.0625
 offset_bottom = 67.0
-text = "3"
+text = "0.35"
 placeholder_text = "500"
+
+[node name="staUsage" type="Control" parent="varsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="varsContainer/staUsage"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Gasto de STA por correr:"
+
+[node name="inputStaUsage" type="LineEdit" parent="varsContainer/staUsage"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 27.0
+offset_right = 68.0625
+offset_bottom = 58.0
+text = "1"
+
+[node name="walkingSPEED" type="Control" parent="varsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="varsContainer/walkingSPEED"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Velocidade de andar:"
+
+[node name="inputWalkingSPEED" type="LineEdit" parent="varsContainer/walkingSPEED"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 30.0
+offset_right = 68.0625
+offset_bottom = 61.0
+text = "5.0"
+
+[node name="runningSPEED" type="Control" parent="varsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="varsContainer/runningSPEED"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Velocidade correndo:"
+
+[node name="inputRunningSPEED" type="LineEdit" parent="varsContainer/runningSPEED"]
+layout_mode = 0
+offset_left = -2.0
+offset_top = 38.0
+offset_right = 65.0625
+offset_bottom = 69.0
+text = "10.0"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="text_changed" from="varsContainer/nCaixas/inputCaixas" to="." method="_on_input_caixas_text_changed"]
 [connection signal="text_changed" from="varsContainer/nBolas/inputBolas" to="." method="_on_input_bolas_text_changed"]
-[connection signal="text_changed" from="varsContainer/cdRoll/inputCdRoll" to="." method="_on_input_cd_roll_text_changed"]
+[connection signal="text_changed" from="varsContainer/staRecover/inputStaRecover" to="." method="_on_input_sta_recover_text_changed"]
+[connection signal="text_changed" from="varsContainer/staUsage/inputStaUsage" to="." method="_on_input_sta_usage_text_changed"]
+[connection signal="text_changed" from="varsContainer/walkingSPEED/inputWalkingSPEED" to="." method="_on_input_walking_speed_text_changed"]
+[connection signal="text_changed" from="varsContainer/runningSPEED/inputRunningSPEED" to="." method="_on_input_running_speed_text_changed"]

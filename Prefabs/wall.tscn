@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyip6mrkixfpu"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_qr8nd"]
+size = Vector2(100, 3)
+orientation = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oqk02"]
+size = Vector3(0.01, 3, 100)
+
+[node name="paredeOeste" type="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 1.5, 0)
+mesh = SubResource("QuadMesh_qr8nd")
+skeleton = NodePath("")
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 192
+collision_mask = 20
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_oqk02")
