@@ -11,45 +11,54 @@ var nBolas
 var cdRoll
 var localizacoes = []
 var numero = RandomNumberGenerator.new()
+
+@onready var currentLevel = Levels.levels[str(GlobalVar.currentLevel)]
+
+func _init():
+	pass
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var level1 = Levels.levels["1"]
-	rooms_creator(level1)
+	#var currentLevel = Levels.levels["1"]
+	rooms_creator(currentLevel)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	GlobalVar.pontos = 0
 	#var parameters = JSON.parse_string(FileAccess.get_file_as_string("res://Others/parameters.json"))
 	var player:Object = player.instantiate()
 	add_child(player)
-	var posicao = generate_spwn_point(player,0,level1)
+	var posicao = generate_spwn_point(player,0,currentLevel)
 	player.position = posicao 
 	
-	for i in range(GlobalVar.nCaixas):
+	for i in range(currentLevel["nCaixas"]):
 		var ui_box:Object = caixa2D.instantiate()
 		$UI/GridContainer.add_child(ui_box)
 		var obj:Object = objetivo.instantiate()
 		add_child(obj)
-		posicao = generate_spwn_point(obj,1,level1)
+		posicao = generate_spwn_point(obj,1,currentLevel)
 		obj.position = posicao
 		obj.rotation = Vector3(0,numero.randf_range(-1, 1),0)
 		obj.ui_box = ui_box
 	
-	for i in range(GlobalVar.nBolas):
+	for i in range(currentLevel["nBolas"]):
 		var obj:Object = inimigo.instantiate()
 		add_child(obj)
-		posicao = generate_spwn_point(obj,2,level1)
+		posicao = generate_spwn_point(obj,2,currentLevel)
 		obj.position = posicao
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if GlobalVar.pontos == GlobalVar.nCaixas:
-		get_tree().change_scene_to_file("res://Scenes/vitoria.tscn")
+	if GlobalVar.pontos == currentLevel["nCaixas"]:
+		if GlobalVar.currentLevel < len(Levels.levels):
+			GlobalVar.currentLevel+=1
+			get_tree().change_scene_to_file("res://Scenes/next_level.tscn")
+		else:
+			get_tree().change_scene_to_file("res://Scenes/vitoria.tscn")
 	
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().change_scene_to_file("res://Scenes/Menu_Inicial.tscn")
 	
 func generate_spwn_point(obj:Object, tipo:int, level):
-	var spwnPoint = Vector3(numero.randf_range(-level["x_tam"]/2, level["z_tam"]/2),0.5,numero.randf_range(-level["x_tam"]/2, level["z_tam"]/2))
+	var spwnPoint = Vector3(numero.randf_range((-level["x_tam"]/2)+1, (level["x_tam"]/2)-1),0.5,numero.randf_range((-level["z_tam"]/2)+1, (level["z_tam"]/2))-1)
 	#print_debug(localizacoes)
 	for i in localizacoes:
 		if i.has_point(Vector2(spwnPoint.x,spwnPoint.z)):

@@ -7,7 +7,7 @@ orientation = 0
 [sub_resource type="BoxShape3D" id="BoxShape3D_oqk02"]
 size = Vector3(0.01, 3, 100)
 
-[node name="paredeOeste" type="MeshInstance3D"]
+[node name="Wall" type="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 1.5, 0)
 mesh = SubResource("QuadMesh_qr8nd")
 skeleton = NodePath("")

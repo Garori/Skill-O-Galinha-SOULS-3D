@@ -2,10 +2,10 @@ extends CharacterBody3D
 
 
 var SPEED
-@onready var walkingSPEED = GlobalVar.walkingSPEED
-@onready var runningSPEED = GlobalVar.runningSPEED
-@onready var staRecover = GlobalVar.staRecover
-@onready var staUsage = GlobalVar.staUsage
+@onready var walkingSPEED = GlobalVar.walkingSPEED if GlobalVar.balancingMode else 5.0
+@onready var runningSPEED = GlobalVar.runningSPEED if GlobalVar.balancingMode else 10.0
+@onready var staRecover = GlobalVar.staRecover if GlobalVar.balancingMode else 0.35
+@onready var staUsage = GlobalVar.staUsage if GlobalVar.balancingMode else 1.
 @export var sensivity = 300
 var last
 @export var mayTheChickenRoll: bool
@@ -84,7 +84,7 @@ func _physics_process(delta):
 		stamina -= staUsage
 		#print_debug(stamina)
 	elif not Input.is_action_pressed("run") or (Input.is_action_pressed("run") and (not mayTheChickenRun or input_dir == Vector2(0,0))):
-		print_debug(input_dir)
+		#print_debug(input_dir)
 		SPEED = walkingSPEED
 		if stamina <100:
 			stamina += staRecover
