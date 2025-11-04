@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cyecn1ubtrn3m"]
 
-[ext_resource type="Script" path="res://Scripts/next_level.gd" id="1_87bcr"]
+[ext_resource type="Script" uid="uid://canafs5xwus8y" path="res://Scripts/next_level.gd" id="1_87bcr"]
 
 [node name="next_level" type="Node2D"]
 script = ExtResource("1_87bcr")
@@ -23,7 +23,7 @@ offset_right = 117.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Enter or LMB to go to next Level
+text = "Enter or Space to go to next Level
 "
 horizontal_alignment = 1
 vertical_alignment = 1

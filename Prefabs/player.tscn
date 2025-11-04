@@ -1,9 +1,9 @@
 [gd_scene load_steps=24 format=3 uid="uid://3s2s3mtnmqp"]
 
-[ext_resource type="Script" path="res://Scripts/Galinha.gd" id="1_wy4ea"]
-[ext_resource type="Texture2D" uid="uid://h6r30ssuvmyj" path="res://Assets/Images/fusca-Sheet.png" id="2_85w1e"]
+[ext_resource type="Script" uid="uid://d1ji5hd55jsvc" path="res://Scripts/Galinha.gd" id="1_wy4ea"]
 [ext_resource type="Texture2D" uid="uid://dtvgg2me15f1n" path="res://Assets/Images/chicken-poster-Sheet.png" id="2_tgblj"]
 [ext_resource type="Texture2D" uid="uid://d0our7ifxubal" path="res://Assets/Images/chicken-poster-Sheet _inverted.png" id="4_3b7sp"]
+[ext_resource type="Texture2D" uid="uid://b6lwdhojg35k6" path="res://Assets/Images/spitesheet_galinha.png" id="4_gqcq0"]
 [ext_resource type="Texture2D" uid="uid://cqshcxkehg1k" path="res://Assets/Images/leek.png" id="5_uf6p3"]
 
 [sub_resource type="Animation" id="Animation_yaqtp"]
@@ -71,8 +71,8 @@ tracks/4/keys = {
 }
 tracks/5/type = "value"
 tracks/5/imported = false
-tracks/5/enabled = false
-tracks/5/path = NodePath("statusContainer/ProgressBar:modulate")
+tracks/5/enabled = true
+tracks/5/path = NodePath("Control/statusContainer/ProgressBar:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -171,8 +171,8 @@ tracks/4/keys = {
 }
 tracks/5/type = "value"
 tracks/5/imported = false
-tracks/5/enabled = false
-tracks/5/path = NodePath("statusContainer/ProgressBar:modulate")
+tracks/5/enabled = true
+tracks/5/path = NodePath("Control/statusContainer/ProgressBar:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -208,17 +208,9 @@ tracks/7/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_817oe"]
 _data = {
-"RESET": SubResource("Animation_yaqtp"),
-"rolamento": SubResource("Animation_2kxw2")
+&"RESET": SubResource("Animation_yaqtp"),
+&"rolamento": SubResource("Animation_2kxw2")
 }
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_soqwn"]
-atlas = ExtResource("2_85w1e")
-region = Rect2(0, 0, 577, 433)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_phu5k"]
-atlas = ExtResource("2_85w1e")
-region = Rect2(577, 0, 577, 433)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3dg30"]
 atlas = ExtResource("2_tgblj")
@@ -236,19 +228,16 @@ region = Rect2(480, 0, 480, 480)
 atlas = ExtResource("4_3b7sp")
 region = Rect2(0, 0, 480, 480)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_60b1i"]
+atlas = ExtResource("4_gqcq0")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7clud"]
+atlas = ExtResource("4_gqcq0")
+region = Rect2(32, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_g5qmc"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_soqwn")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_phu5k")
-}],
-"loop": true,
-"name": &"attack",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3dg30")
@@ -269,6 +258,17 @@ animations = [{
 }],
 "loop": true,
 "name": &"default_esq",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60b1i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7clud")
+}],
+"loop": true,
+"name": &"new_dir",
 "speed": 15.0
 }]
 
@@ -317,7 +317,7 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fspf2"]
 _data = {
-"attack": SubResource("Animation_s42xy")
+&"attack": SubResource("Animation_s42xy")
 }
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1d7vq"]
@@ -343,9 +343,10 @@ font_size = 8
 font_color = Color(1, 0, 0, 1)
 
 [node name="Player" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00665867, 0)
 collision_layer = 16
 collision_mask = 73
+axis_lock_linear_y = true
+axis_lock_angular_y = true
 script = ExtResource("1_wy4ea")
 mayTheChickenRoll = true
 mayTheChickenRun = true
@@ -353,7 +354,7 @@ stamina = 80.0
 
 [node name="animacao" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_817oe")
+&"": SubResource("AnimationLibrary_817oe")
 }
 
 [node name="Sprite" type="AnimatedSprite3D" parent="."]
@@ -364,29 +365,21 @@ sprite_frames = SubResource("SpriteFrames_g5qmc")
 animation = &"default_dir"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0110474, 0, 0)
 shape = SubResource("BoxShape3D_i7iyj")
 
 [node name="CameraPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.873228, 0.487311, 0, -0.487311, 0.873228, 0, 0, -1)
 
-[node name="saidaDeBalas" type="Node3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1)
-
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 0.985307, 0.170794, 0, -0.170794, 0.985307, 0, 2.5, 25)
+transform = Transform3D(1, 0, 0, 0, 0.985307, 0.170794, 0, -0.170794, 0.985307, 0, 2.49997, 25)
 fov = 55.2839
 
-[node name="arma" type="RigidBody3D" parent="."]
+[node name="arma" type="Node3D" parent="."]
 transform = Transform3D(-0.965925, 0.258822, -9.36934e-07, 0, -3.61999e-06, -1, -0.258822, -0.965925, 3.49664e-06, 0, 0, 0)
-collision_mask = 4
-axis_lock_linear_y = true
-axis_lock_angular_y = true
-gravity_scale = 0.0
 
 [node name="animacao" type="AnimationPlayer" parent="arma"]
 libraries = {
-"": SubResource("AnimationLibrary_fspf2")
+&"": SubResource("AnimationLibrary_fspf2")
 }
 
 [node name="leek" type="Sprite3D" parent="arma"]
@@ -404,53 +397,55 @@ collision_layer = 32
 transform = Transform3D(1, 2.98023e-08, 4.77485e-12, -2.98023e-08, 1, 1.61435e-11, 0, 3.41061e-13, 1, 0, 0, 0.00361937)
 shape = SubResource("BoxShape3D_1d7vq")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -2.5
-offset_top = -2.5
-offset_right = 2.5
-offset_bottom = 2.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = -639.68
+offset_bottom = -359.92
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 0, 0, 1)
 
-[node name="statusContainer" type="VBoxContainer" parent="."]
-anchors_preset = 8
+[node name="statusContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -26.0
-offset_top = -5.0
-offset_right = 28.0
-offset_bottom = 3.0
+offset_left = -18.16
+offset_top = -0.039978
+offset_right = 41.84
+offset_bottom = 7.96002
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="statusContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="Control/statusContainer"]
 modulate = Color(0.615686, 0.796078, 0.478431, 1)
 custom_minimum_size = Vector2(54, 8)
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 1
 theme_override_styles/background = SubResource("StyleBoxEmpty_jlalc")
 theme_override_styles/fill = SubResource("StyleBoxFlat_wqyji")
 value = 100.0
 show_percentage = false
 
-[node name="UnableToRun" type="Label" parent="statusContainer"]
+[node name="UnableToRun" type="Label" parent="Control/statusContainer"]
 visible = false
 layout_mode = 2
 text = "Unable to run"
 label_settings = SubResource("LabelSettings_v8tod")
+horizontal_alignment = 1
 
-[node name="unableToRoll" type="Label" parent="statusContainer"]
+[node name="unableToRoll" type="Label" parent="Control/statusContainer"]
 visible = false
 layout_mode = 2
 text = "Unable to roll"

@@ -14,10 +14,13 @@ var last
 var aimPressed = false
 @onready var defaultCameraPosition = $CameraPivot/Camera3D.position
 @onready var defaultCameraPivotPosition = $CameraPivot.position
-@onready var progressBar:ProgressBar = $statusContainer/ProgressBar
-@onready var unabletoRoll:Label = $statusContainer/unableToRoll
-@onready var unableToRun:Label = $statusContainer/UnableToRun
+@onready var statusContainerInitialPosition = $Control/statusContainer.position
+@onready var progressBar:ProgressBar = $Control/statusContainer/ProgressBar
+@onready var unabletoRoll:Label = $Control/statusContainer/unableToRoll
+@onready var unableToRun:Label = $Control/statusContainer/UnableToRun
+var playerin2d
 const bala = preload("res://Prefabs/bala.tscn")
+# const teste = 1001
 var direction
 @export var stamina:float = 100.0
 var modRED = 1*(100-stamina)/100
@@ -37,8 +40,34 @@ func _ready():
 	unableToRun.visible = not mayTheChickenRun
 	stamina = 100
 	#atacar = false
+	
+	#$CameraPivot/Camera3D.
 
 func _physics_process(delta):
+	#var positionbotton_right = $CameraPivot/Camera3D.unproject_position(to_global($CollisionShape3D.position - \
+	#Vector3(-0.69/2,1.1/2,-0.1/2)))
+	#var positionbotton_left = $CameraPivot/Camera3D.unproject_position(to_global($CollisionShape3D.position - \
+	#Vector3(0.69/2,1.1/2,-0.1/2)))
+	#var sizezzz = positionbotton_right.x - positionbotton_left.x
+	##print_debug(sizezzz)
+	$Control.position = $CameraPivot/Camera3D.unproject_position(to_global($CollisionShape3D.position - \
+	Vector3(0.69/2,1.1/2,-0.1/2))) + Vector2(0,10)
+	
+	
+	#$ColorRect.position = $CameraPivot/Camera3D.unproject_position($Sprite.global_position)
+	#print_debug($Sprite.global_rotation_degrees)
+	#print_debug($CollisionShape3D.)
+	#print_debug($CollisionShape3D.global_position-Vector3(0.69/2,1.1/2,0))
+	#print_debug(playerin2d)
+	#print_debug($CollisionShape3D.global_position)
+	#var a:TriangleMesh = $Sprite.generate_triangle_mesh()
+	#$Sprite.
+	#print_debug(a.mesh.get_faces())
+	#$CollisionShape2D.global_position = Vector2(position.x,position.z)
+	#$CollisionShape2D.position = $Camera3Dfor2D.unproject_position(position)
+	#print_debug("__________________________________________")
+	#print_debug($CollisionShape2D.global_position)
+	#print_debug($CollisionShape2D.global_position)
 	
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -131,6 +160,7 @@ func _physics_process(delta):
 	move_and_slide()
 	
 func _input(event):
+	# print_debug(position)
 	#if aimPressed and event is InputEventMouseButton and event.button_index == 1 and event.is_action_pressed("ui_attack"):
 		#var obj:Object = bala.instantiate()
 		#obj.position = position
@@ -140,7 +170,22 @@ func _input(event):
 		##print_debug($saidaDeBalas.position-position)
 		##print_debug(obj.rotation)
 		#get_parent().add_child(obj)
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			$CameraPivot/Camera3D.position.y -= 0.1
+			$CameraPivot/Camera3D.position.z -= 1.0
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			$CameraPivot/Camera3D.position.y += 0.1
+			$CameraPivot/Camera3D.position.z += 1.0
+			
+		$CameraPivot/Camera3D.position.y = clampf($CameraPivot/Camera3D.position.y, 0.3, 6)
+		$CameraPivot/Camera3D.position.z = clampf($CameraPivot/Camera3D.position.z, 3, 60)
+		$Control.scale= Vector2(25/$CameraPivot/Camera3D.position.z,25/$CameraPivot/Camera3D.position.z)
 		
+		
+		#$Control/statusContainer.position.y = clampf($statusContainer.position.y, statusContainerInitialPosition.y-22, statusContainerInitialPosition.y+35)
+		# print_debug($CameraPivot/Camera3D.position)
+			
 	if event is InputEventMouseMotion:
 		rotation.y -= event.relative.x/sensivity
 		$CameraPivot.rotation.x -= event.relative.y/sensivity
@@ -156,4 +201,3 @@ func _input(event):
 			$CameraPivot.rotation.x -= event.axis_value*10/sensivity
 			$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-65),deg_to_rad(0))
 		
-

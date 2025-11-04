@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://ccf51cx6fqw8w"]
 
-[ext_resource type="Script" path="res://Scripts/game_controller.gd" id="1_38cju"]
+[ext_resource type="Script" uid="uid://5kkape4v0gjr" path="res://Scripts/game_controller.gd" id="1_38cju"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_koghe"]
 sky_top_color = Color(0.321569, 0.396078, 0.835294, 1)
@@ -27,6 +27,7 @@ transform = Transform3D(0.307357, -0.778547, 0.547171, 0, 0.575005, 0.81815, -0.
 shadow_enabled = true
 
 [node name="UI" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
 
 [node name="GridContainer" type="GridContainer" parent="UI"]
 layout_direction = 2
@@ -35,13 +36,12 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -15.0
-offset_top = -15.0
-offset_right = 1265.0
-offset_bottom = 705.0
+offset_right = 1280.0
+offset_bottom = 720.0
 grow_horizontal = 0
 grow_vertical = 0
 rotation = 3.14159
-size_flags_horizontal = 0
-size_flags_vertical = 0
+pivot_offset = Vector2(-5, -5)
+size_flags_horizontal = 3
+size_flags_vertical = 3
 columns = 50

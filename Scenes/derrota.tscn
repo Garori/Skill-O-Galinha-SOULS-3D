@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://dqxtxelxa75q"]
 
-[ext_resource type="Script" path="res://Scripts/derrotaTela.gd" id="1_ojxsd"]
-[ext_resource type="Script" path="res://Scripts/CameraDerrota.gd" id="2_hu27j"]
-[ext_resource type="Script" path="res://Scripts/TextoDerrota.gd" id="3_74x83"]
+[ext_resource type="Script" uid="uid://ddyquxobp8n6g" path="res://Scripts/derrotaTela.gd" id="1_ojxsd"]
+[ext_resource type="Script" uid="uid://i7sf22487x6g" path="res://Scripts/CameraDerrota.gd" id="2_hu27j"]
+[ext_resource type="Script" uid="uid://cjfx8ielm24d6" path="res://Scripts/TextoDerrota.gd" id="3_74x83"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlcni"]
 cull_mode = 1
