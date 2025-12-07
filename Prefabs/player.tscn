@@ -1,10 +1,14 @@
-[gd_scene load_steps=24 format=3 uid="uid://3s2s3mtnmqp"]
+[gd_scene load_steps=28 format=3 uid="uid://3s2s3mtnmqp"]
 
 [ext_resource type="Script" uid="uid://d1ji5hd55jsvc" path="res://Scripts/Galinha.gd" id="1_wy4ea"]
 [ext_resource type="Texture2D" uid="uid://dtvgg2me15f1n" path="res://Assets/Images/chicken-poster-Sheet.png" id="2_tgblj"]
 [ext_resource type="Texture2D" uid="uid://d0our7ifxubal" path="res://Assets/Images/chicken-poster-Sheet _inverted.png" id="4_3b7sp"]
 [ext_resource type="Texture2D" uid="uid://b6lwdhojg35k6" path="res://Assets/Images/spitesheet_galinha.png" id="4_gqcq0"]
 [ext_resource type="Texture2D" uid="uid://cqshcxkehg1k" path="res://Assets/Images/leek.png" id="5_uf6p3"]
+[ext_resource type="Script" uid="uid://cgcykyi573vh5" path="res://Scripts/States/state_machine.gd" id="6_juxdh"]
+[ext_resource type="Script" uid="uid://de11ognqopl1h" path="res://Scripts/States/ChickenPlayer/Idle.gd" id="7_juxdh"]
+[ext_resource type="Script" uid="uid://dxfguw3jeo6x0" path="res://Scripts/States/ChickenPlayer/Walk.gd" id="8_08u7w"]
+[ext_resource type="Script" uid="uid://seq5w2p106t6" path="res://Scripts/States/ChickenPlayer/Run.gd" id="9_kgmex"]
 
 [sub_resource type="Animation" id="Animation_yaqtp"]
 resource_name = "RESET"
@@ -348,8 +352,6 @@ collision_mask = 73
 axis_lock_linear_y = true
 axis_lock_angular_y = true
 script = ExtResource("1_wy4ea")
-mayTheChickenRoll = true
-mayTheChickenRun = true
 stamina = 80.0
 
 [node name="animacao" type="AnimationPlayer" parent="."]
@@ -418,12 +420,11 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -18.16
-offset_top = -0.039978
-offset_right = 41.84
-offset_bottom = 7.96002
+offset_left = -0.16000366
+offset_top = -0.039993286
+offset_right = 59.839996
+offset_bottom = 7.9600067
 grow_horizontal = 2
-grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -451,3 +452,20 @@ layout_mode = 2
 text = "Unable to roll"
 label_settings = SubResource("LabelSettings_r8cy2")
 horizontal_alignment = 1
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("6_juxdh")
+initial_state = NodePath("Idle")
+metadata/_custom_type_script = "uid://cgcykyi573vh5"
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("7_juxdh")
+metadata/_custom_type_script = "uid://de11ognqopl1h"
+
+[node name="Walk" type="Node" parent="StateMachine"]
+script = ExtResource("8_08u7w")
+metadata/_custom_type_script = "uid://dxfguw3jeo6x0"
+
+[node name="Run" type="Node" parent="StateMachine"]
+script = ExtResource("9_kgmex")
+metadata/_custom_type_script = "uid://seq5w2p106t6"

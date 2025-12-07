@@ -1,4 +1,7 @@
 extends Node
+
+var t_passed = 0
+var new_pos_fixed = Vector2(0,0)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$varsContainer/nCaixas/inputCaixas.text = str(Levels.levels["-1"]["nCaixas"])
@@ -13,6 +16,7 @@ func _ready():
 	$balancingMode.button_pressed = GlobalVar.balancingMode
 	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
 	
 	pass # Replace with function body.
 

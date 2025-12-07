@@ -1,30 +1,30 @@
+class_name Chicken
 extends CharacterBody3D
 
 
 var SPEED
-@onready var walkingSPEED = GlobalVar.walkingSPEED if GlobalVar.balancingMode else 5.0
-@onready var runningSPEED = GlobalVar.runningSPEED if GlobalVar.balancingMode else 10.0
 @onready var staRecover = GlobalVar.staRecover if GlobalVar.balancingMode else 0.35
 @onready var staUsage = GlobalVar.staUsage if GlobalVar.balancingMode else 1.
 @export var sensivity = 300
-var last
-@export var mayTheChickenRoll: bool
 
-@export var mayTheChickenRun: bool
-var aimPressed = false
+
 @onready var defaultCameraPosition = $CameraPivot/Camera3D.position
 @onready var defaultCameraPivotPosition = $CameraPivot.position
 @onready var statusContainerInitialPosition = $Control/statusContainer.position
+@onready var camera := $CameraPivot/Camera3D
 @onready var progressBar:ProgressBar = $Control/statusContainer/ProgressBar
 @onready var unabletoRoll:Label = $Control/statusContainer/unableToRoll
 @onready var unableToRun:Label = $Control/statusContainer/UnableToRun
-var playerin2d
-const bala = preload("res://Prefabs/bala.tscn")
-# const teste = 1001
-var direction
-@export var stamina:float = 100.0
+@onready var sprite = $Sprite
+@export var stamina:float
+
+var mayTheChickenRoll: bool
+var mayTheChickenRun: bool
+var last
 var modRED = 1*(100-stamina)/100
 var modGREEN = 1*(stamina)/100
+var t_passed = 0
+var new_pos_fixed = Vector2(0,0)
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -39,97 +39,31 @@ func _ready():
 	unabletoRoll.visible = not mayTheChickenRoll
 	unableToRun.visible = not mayTheChickenRun
 	stamina = 100
-	#atacar = false
-	
-	#$CameraPivot/Camera3D.
 
-func _physics_process(delta):
-	#var positionbotton_right = $CameraPivot/Camera3D.unproject_position(to_global($CollisionShape3D.position - \
-	#Vector3(-0.69/2,1.1/2,-0.1/2)))
-	#var positionbotton_left = $CameraPivot/Camera3D.unproject_position(to_global($CollisionShape3D.position - \
-	#Vector3(0.69/2,1.1/2,-0.1/2)))
-	#var sizezzz = positionbotton_right.x - positionbotton_left.x
-	##print_debug(sizezzz)
-	$Control.position = $CameraPivot/Camera3D.unproject_position(to_global($CollisionShape3D.position - \
-	Vector3(0.69/2,1.1/2,-0.1/2))) + Vector2(0,10)
-	
-	
-	#$ColorRect.position = $CameraPivot/Camera3D.unproject_position($Sprite.global_position)
-	#print_debug($Sprite.global_rotation_degrees)
-	#print_debug($CollisionShape3D.)
-	#print_debug($CollisionShape3D.global_position-Vector3(0.69/2,1.1/2,0))
-	#print_debug(playerin2d)
-	#print_debug($CollisionShape3D.global_position)
-	#var a:TriangleMesh = $Sprite.generate_triangle_mesh()
-	#$Sprite.
-	#print_debug(a.mesh.get_faces())
-	#$CollisionShape2D.global_position = Vector2(position.x,position.z)
-	#$CollisionShape2D.position = $Camera3Dfor2D.unproject_position(position)
-	#print_debug("__________________________________________")
-	#print_debug($CollisionShape2D.global_position)
-	#print_debug($CollisionShape2D.global_position)
-	
+
+
+func _physics_process(delta):	
+	# Node2D.get_mouse_global_position()
+	# get_viewport().warp_mouse(new_pos)
+	var screen_pos = camera.unproject_position(global_position + Vector3(0, -0.2-$CollisionShape3D.shape.size.y/2, 0)) 
+	$Control.global_position = screen_pos + Vector2(-$Control/statusContainer/ProgressBar.get_rect().size.x / 2, 0)
+
+	# $Control.global_position += Vector2(-$Control/statusContainer/ProgressBar.get_rect().size.x / 2, 0)
+		
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-	# Add the gravity.
-	#if Input.is_action_just_pressed("aim"):
-		#$CameraPivot/Camera3D.rotation.x = 0
-		#$CameraPivot.rotation.x = 0
-		#$CameraPivot.position.y=0
-		#$CameraPivot/Camera3D.position=Vector3(0,0,0.9)
-		#$CameraPivot/Camera3D.fov = 5
-		#sensivity = 1200
-		#SPEED = 2.0
-	#if Input.is_action_just_released("aim"):
-		#aimPressed = false
-		#$CameraPivot/Camera3D.position=defaultCameraPosition
-		#$CameraPivot.position=defaultCameraPivotPosition
-		#$CameraPivot/Camera3D.fov = 55.3
-		#sensivity = 300
-		#SPEED = 5.0
-	#if Input.is_action_pressed("aim"):
-		#aimPressed = true
-		#return
-	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	if Input.is_action_pressed("ui_right"):
-		last = "default_dir"
-	elif Input.is_action_pressed("ui_left"):
-		last = "default_esq"
-	
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+
 	if is_on_floor():
 		$Sprite.animation = last
 	
-	if Input.is_action_just_pressed("ui_attack") and is_on_floor():
-		$arma/animacao.play("attack")
-	
-	if Input.is_action_just_pressed("dodge_roll") and is_on_floor() and mayTheChickenRoll:
-		$animacao.play("rolamento")
-		pass
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	if Input.is_action_pressed("run") and stamina > 0.5 and mayTheChickenRun and input_dir != Vector2(0,0):
-		SPEED = runningSPEED
-		stamina -= staUsage
-		#print_debug(stamina)
-	elif not Input.is_action_pressed("run") or (Input.is_action_pressed("run") and (not mayTheChickenRun or input_dir == Vector2(0,0))):
-		#print_debug(input_dir)
-		SPEED = walkingSPEED
-		if stamina <100:
-			stamina += staRecover
-		if stamina>95:
-			mayTheChickenRun = true
-	#if Input.is_action_just_released("run"):
-		#if stamina<15:
-			#mayTheChickenRun = false
-	if (Input.is_action_just_released("run") and stamina <=30) or stamina<5:
-		mayTheChickenRun = false
-		mayTheChickenRoll = false
-		
 	progressBar.value = stamina
 	unabletoRoll.visible = not mayTheChickenRoll
 	unableToRun.visible = not mayTheChickenRun
 	
+	if stamina>95:
+		mayTheChickenRun = true
 	if stamina<80:
 		mayTheChickenRoll = false
 	elif stamina>=80 and mayTheChickenRun:
@@ -147,29 +81,15 @@ func _physics_process(delta):
 		
 	progressBar.modulate = Color(modRED,modGREEN,0)
 	
-	direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		$Sprite.play()
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-		$Sprite.stop()
-	
-	move_and_slide()
-	
 func _input(event):
-	# print_debug(position)
-	#if aimPressed and event is InputEventMouseButton and event.button_index == 1 and event.is_action_pressed("ui_attack"):
-		#var obj:Object = bala.instantiate()
-		#obj.position = position
-		#var calculo = obj.transform.basis * ($CameraPivot/saidaDeBalas.global_position-position).normalized()
-		#obj.direction = Vector3(calculo.x,$CameraPivot.rotation.x,calculo.z) * 100
-		#obj.rotation = Vector3($CameraPivot.rotation.x,rotation.y,0)
-		##print_debug($saidaDeBalas.position-position)
-		##print_debug(obj.rotation)
-		#get_parent().add_child(obj)
+
+	if Input.is_action_just_pressed("ui_attack") and is_on_floor():
+		$arma/animacao.play("attack")
+	
+	if Input.is_action_just_pressed("dodge_roll") and is_on_floor() and mayTheChickenRoll:
+		$animacao.play("rolamento")
+
+
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			$CameraPivot/Camera3D.position.y -= 0.1
@@ -178,14 +98,11 @@ func _input(event):
 			$CameraPivot/Camera3D.position.y += 0.1
 			$CameraPivot/Camera3D.position.z += 1.0
 			
-		$CameraPivot/Camera3D.position.y = clampf($CameraPivot/Camera3D.position.y, 0.3, 6)
-		$CameraPivot/Camera3D.position.z = clampf($CameraPivot/Camera3D.position.z, 3, 60)
-		$Control.scale= Vector2(25/$CameraPivot/Camera3D.position.z,25/$CameraPivot/Camera3D.position.z)
+		$CameraPivot/Camera3D.position.y = clampf($CameraPivot/Camera3D.position.y, 0.3, 4)
+		$CameraPivot/Camera3D.position.z = clampf($CameraPivot/Camera3D.position.z, 3, 40)
+		# $Control.scale= Vector2(25/$CameraPivot/Camera3D.position.z,25/$CameraPivot/Camera3D.position.z)
 		
 		
-		#$Control/statusContainer.position.y = clampf($statusContainer.position.y, statusContainerInitialPosition.y-22, statusContainerInitialPosition.y+35)
-		# print_debug($CameraPivot/Camera3D.position)
-			
 	if event is InputEventMouseMotion:
 		rotation.y -= event.relative.x/sensivity
 		$CameraPivot.rotation.x -= event.relative.y/sensivity
