@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://3s2s3mtnmqp"]
+[gd_scene load_steps=29 format=3 uid="uid://3s2s3mtnmqp"]
 
 [ext_resource type="Script" uid="uid://d1ji5hd55jsvc" path="res://Scripts/Galinha.gd" id="1_wy4ea"]
 [ext_resource type="Texture2D" uid="uid://dtvgg2me15f1n" path="res://Assets/Images/chicken-poster-Sheet.png" id="2_tgblj"]
@@ -76,7 +76,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Control/statusContainer/ProgressBar:modulate")
+tracks/5/path = NodePath("PlayerUI/statusContainer/ProgressBar:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -176,7 +176,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Control/statusContainer/ProgressBar:modulate")
+tracks/5/path = NodePath("PlayerUI/statusContainer/ProgressBar:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -346,6 +346,32 @@ font_color = Color(1, 0, 0, 1)
 font_size = 8
 font_color = Color(1, 0, 0, 1)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_08u7w"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("animacao:current_animation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Sprite:animation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("animacao:active")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Sprite:frame")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath(".:rotation")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath("Nickname:text")
+properties/6/spawn = true
+properties/6/replication_mode = 1
+properties/7/path = NodePath("Nickname:modulate")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 16
 collision_mask = 73
@@ -399,7 +425,18 @@ collision_layer = 32
 transform = Transform3D(1, 2.98023e-08, 4.77485e-12, -2.98023e-08, 1, 1.61435e-11, 0, 3.41061e-13, 1, 0, 0, 0.00361937)
 shape = SubResource("BoxShape3D_1d7vq")
 
-[node name="Control" type="Control" parent="."]
+[node name="Nickname" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.795, 0)
+billboard = 1
+no_depth_test = true
+alpha_antialiasing_mode = 1
+texture_filter = 0
+modulate = Color(0, 0, 0, 1)
+text = "NOME"
+font_size = 200
+outline_size = 5
+
+[node name="PlayerUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -413,7 +450,7 @@ offset_bottom = -359.92
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="statusContainer" type="VBoxContainer" parent="Control"]
+[node name="statusContainer" type="VBoxContainer" parent="PlayerUI"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -429,7 +466,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="Control/statusContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="PlayerUI/statusContainer"]
 modulate = Color(0.615686, 0.796078, 0.478431, 1)
 custom_minimum_size = Vector2(54, 8)
 layout_mode = 2
@@ -439,14 +476,14 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_wqyji")
 value = 100.0
 show_percentage = false
 
-[node name="UnableToRun" type="Label" parent="Control/statusContainer"]
+[node name="UnableToRun" type="Label" parent="PlayerUI/statusContainer"]
 visible = false
 layout_mode = 2
 text = "Unable to run"
 label_settings = SubResource("LabelSettings_v8tod")
 horizontal_alignment = 1
 
-[node name="unableToRoll" type="Label" parent="Control/statusContainer"]
+[node name="unableToRoll" type="Label" parent="PlayerUI/statusContainer"]
 visible = false
 layout_mode = 2
 text = "Unable to roll"
@@ -469,3 +506,8 @@ metadata/_custom_type_script = "uid://dxfguw3jeo6x0"
 [node name="Run" type="Node" parent="StateMachine"]
 script = ExtResource("9_kgmex")
 metadata/_custom_type_script = "uid://seq5w2p106t6"
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_08u7w")
+
+[node name="SubViewport" type="SubViewport" parent="."]

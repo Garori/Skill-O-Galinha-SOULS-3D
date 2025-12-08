@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://vq0a1u6ynijf"]
+
+[ext_resource type="Script" uid="uid://jotod1ecag1x" path="res://Scripts/alert.gd" id="1_uki34"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_81wm2"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.6, 0.6, 0.6, 0.4745098)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_size = 7
+shadow_offset = Vector2(5, 5)
+
+[node name="alert" type="Control"]
+modulate = Color(1, 1, 1, 0.6901961)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_uki34")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -110.0
+offset_right = 128.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_81wm2")
+text = "THE HOST IP HAS BEEN
+COPIED TO THE CLIPBOARD!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -18,18 +18,20 @@ config/windows_native_icon="res://icon.ico"
 
 [autoload]
 
+Lobby="*res://autoloads/Lobby.gd"
 SaveManager="*res://autoloads/save_manager.gd"
 GlobalVar="*res://autoloads/global_var.gd"
-Levels="*res://autoloads/levels.gd"
-
-[debug]
-
-settings/stdout/print_fps=true
+Levels="*res://autoloads/Levels.gd"
+Utils="*res://autoloads/Utils.gd"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+
+[global_group]
+
+UI="UI Elements"
 
 [input]
 

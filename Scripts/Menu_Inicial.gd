@@ -17,22 +17,6 @@ func _ready():
 	
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
-	
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	#print_debug(GlobalVar.balancingMode)
-	pass
-
-func _on_button_pressed():
-	if GlobalVar.balancingMode:
-		GlobalVar.currentLevel = -1
-	else:
-		GlobalVar.currentLevel = 1
-	get_tree().change_scene_to_file("res://Scenes/game_scene.tscn")
-	pass # Replace with function body.
 
 func _input(event):
 	#print_debug(event)
@@ -51,7 +35,18 @@ func _input(event):
 		#elif event.axis == 3:
 			#$CameraPivot.rotation.x -= event.axis_value*10/sensivity
 			#$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-65),deg_to_rad(0))
+
+
+func _on_start_game_pressed() -> void:
+	if GlobalVar.balancingMode:
+		Levels.set_current_level.rpc(-1)
+	else:
+		Levels.set_current_level.rpc(1)
 		
+	if Lobby.is_multiplayer_enabled:
+		Lobby.load_game.rpc("res://Scenes/game.tscn")
+	else:
+		get_tree().change_scene_to_file("res://Scenes/game.tscn")
 
 
 func _on_input_sta_recover_text_changed(new_text):
@@ -69,18 +64,35 @@ func _on_input_walking_speed_text_changed(new_text):
 func _on_input_running_speed_text_changed(new_text):
 	GlobalVar.runningSPEED = float(new_text)
 
+
 func _on_input_caixas_text_changed(new_text):
 	Levels.levels["-1"]["nCaixas"] = int(new_text)
+
 
 func _on_input_bolas_text_changed(new_text):
 	Levels.levels["-1"]["nBolas"] = int(new_text)
 
+
 func _on_input_altura_text_changed(new_text):
 	Levels.levels["-1"]["x_tam"] = int(new_text)
+
 
 func _on_input_largura_text_changed(new_text):
 	Levels.levels["-1"]["z_tam"] = int(new_text)
 
+
 func _on_balancing_mode_toggled(toggled_on):
 		GlobalVar.balancingMode = toggled_on
 		$varsContainer.visible = toggled_on
+
+
+func _on_online_mode_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		Lobby.is_multiplayer_enabled = true
+		get_node("%multiplayerMenu").visible = true
+		get_node("%StartGame").disabled = true
+		get_node("%balancingMode").button_pressed = false
+	else:
+		Lobby.is_multiplayer_enabled = false
+		get_node("%StartGame").disabled = false
+		get_node("%multiplayerMenu").visible = false

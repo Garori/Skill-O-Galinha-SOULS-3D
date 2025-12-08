@@ -10,11 +10,13 @@ var SPEED
 
 @onready var defaultCameraPosition = $CameraPivot/Camera3D.position
 @onready var defaultCameraPivotPosition = $CameraPivot.position
-@onready var statusContainerInitialPosition = $Control/statusContainer.position
+@onready var statusContainerInitialPosition = $PlayerUI/statusContainer.position
 @onready var camera := $CameraPivot/Camera3D
-@onready var progressBar:ProgressBar = $Control/statusContainer/ProgressBar
-@onready var unabletoRoll:Label = $Control/statusContainer/unableToRoll
-@onready var unableToRun:Label = $Control/statusContainer/UnableToRun
+@onready var progressBar:ProgressBar = $PlayerUI/statusContainer/ProgressBar
+@onready var unabletoRoll:Label = $PlayerUI/statusContainer/unableToRoll
+@onready var unableToRun:Label = $PlayerUI/statusContainer/UnableToRun
+@onready var nickname:Label3D = $Nickname
+
 @onready var sprite = $Sprite
 @export var stamina:float
 
@@ -26,9 +28,23 @@ var modGREEN = 1*(stamina)/100
 var t_passed = 0
 var new_pos_fixed = Vector2(0,0)
 
+var player_info = {}
+
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(name.to_int())
+
+
 func _ready():
+	if is_multiplayer_authority():
+		camera.make_current()
+		nickname.modulate = player_info["color"]
+		nickname.text = player_info["name"]
+		nickname.visible = false
+	else:
+		$PlayerUI/statusContainer.visible = false
 	$arma.visible = false
 	#$arma.set_process(false)
 	$arma/armaArea/armaCollision.disabled = true
@@ -46,9 +62,9 @@ func _physics_process(delta):
 	# Node2D.get_mouse_global_position()
 	# get_viewport().warp_mouse(new_pos)
 	var screen_pos = camera.unproject_position(global_position + Vector3(0, -0.2-$CollisionShape3D.shape.size.y/2, 0)) 
-	$Control.global_position = screen_pos + Vector2(-$Control/statusContainer/ProgressBar.get_rect().size.x / 2, 0)
+	$PlayerUI.global_position = screen_pos + Vector2(-$PlayerUI/statusContainer/ProgressBar.get_rect().size.x / 2, 0)
 
-	# $Control.global_position += Vector2(-$Control/statusContainer/ProgressBar.get_rect().size.x / 2, 0)
+	# $PlayerUI.global_position += Vector2(-$PlayerUI/statusContainer/ProgressBar.get_rect().size.x / 2, 0)
 		
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -100,7 +116,7 @@ func _input(event):
 			
 		$CameraPivot/Camera3D.position.y = clampf($CameraPivot/Camera3D.position.y, 0.3, 4)
 		$CameraPivot/Camera3D.position.z = clampf($CameraPivot/Camera3D.position.z, 3, 40)
-		# $Control.scale= Vector2(25/$CameraPivot/Camera3D.position.z,25/$CameraPivot/Camera3D.position.z)
+		# $PlayerUI.scale= Vector2(25/$CameraPivot/Camera3D.position.z,25/$CameraPivot/Camera3D.position.z)
 		
 		
 	if event is InputEventMouseMotion:

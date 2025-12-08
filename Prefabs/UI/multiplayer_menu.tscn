@@ -1,0 +1,87 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmkdeoggclp1v"]
+
+[ext_resource type="Script" uid="uid://nu0cm2ddt5s8" path="res://Scripts/multiplayer_menu.gd" id="1_1rerr"]
+
+[node name="multiplayerMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_1rerr")
+
+[node name="servers_container" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.592
+anchor_top = 0.5
+anchor_right = 0.592
+anchor_bottom = 0.5
+offset_left = 0.015991211
+offset_top = -21.0
+offset_right = 138.01599
+offset_bottom = 20.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="servers_container"]
+layout_mode = 2
+
+[node name="refresh" type="Button" parent="servers_container/VBoxContainer"]
+layout_mode = 2
+text = "Refresh servers"
+
+[node name="menuContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.5
+offset_top = -85.5
+offset_right = 80.5
+offset_bottom = 85.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="nickname" type="LineEdit" parent="menuContainer"]
+layout_mode = 2
+placeholder_text = "NICKNAME"
+alignment = 1
+max_length = 10
+
+[node name="ip" type="LineEdit" parent="menuContainer"]
+layout_mode = 2
+placeholder_text = "JOIN IP"
+alignment = 1
+
+[node name="Server" type="Button" parent="menuContainer"]
+layout_mode = 2
+disabled = true
+text = "HOST GAME"
+
+[node name="Client" type="Button" parent="menuContainer"]
+layout_mode = 2
+disabled = true
+text = "CLIENT"
+
+[node name="find_ip" type="Button" parent="menuContainer"]
+visible = false
+layout_mode = 2
+text = "copy IP to clipboard"
+
+[node name="start" type="Button" parent="menuContainer"]
+visible = false
+layout_mode = 2
+text = "start"
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[connection signal="button_down" from="servers_container/VBoxContainer/refresh" to="." method="_on_refresh_button_down"]
+[connection signal="text_changed" from="menuContainer/nickname" to="." method="_on_nickname_text_changed"]
+[connection signal="text_changed" from="menuContainer/ip" to="." method="_on_ip_text_changed"]
+[connection signal="button_down" from="menuContainer/Server" to="." method="_on_server_button_down"]
+[connection signal="button_down" from="menuContainer/Client" to="." method="_on_client_button_down"]
+[connection signal="button_down" from="menuContainer/find_ip" to="." method="_on_find_ip_button_down"]
+[connection signal="button_down" from="menuContainer/start" to="." method="_on_start_button_down"]

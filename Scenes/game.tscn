@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://ccf51cx6fqw8w"]
+[gd_scene load_steps=6 format=3 uid="uid://ccf51cx6fqw8w"]
 
 [ext_resource type="Script" uid="uid://5kkape4v0gjr" path="res://Scripts/game_controller.gd" id="1_38cju"]
+[ext_resource type="Script" uid="uid://q47b84ojbm3v" path="res://Scripts/multiplayer_spawner.gd" id="2_qxrlw"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_koghe"]
 sky_top_color = Color(0.321569, 0.396078, 0.835294, 1)
@@ -16,7 +17,7 @@ sky = SubResource("Sky_k86uh")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="Main" type="Node3D"]
+[node name="Game" type="Node3D"]
 script = ExtResource("1_38cju")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -45,3 +46,8 @@ pivot_offset = Vector2(-5, -5)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 50
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://caavsdxcgwcpt", "uid://c4t4y814ln5t8")
+spawn_path = NodePath("..")
+script = ExtResource("2_qxrlw")
