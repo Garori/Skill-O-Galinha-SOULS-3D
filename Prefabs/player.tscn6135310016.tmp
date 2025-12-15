@@ -380,12 +380,9 @@ properties/8/replication_mode = 1
 properties/9/path = NodePath("Info/SubViewport/Nickname:text")
 properties/9/spawn = true
 properties/9/replication_mode = 2
-properties/10/path = NodePath("Info/SubViewport/ColorRect:modulate")
+properties/10/path = NodePath("Info/SubViewport/Nickname:modulate")
 properties/10/spawn = true
-properties/10/replication_mode = 1
-properties/11/path = NodePath("Info/SubViewport/Nickname:theme_override_colors/font_color")
-properties/11/spawn = true
-properties/11/replication_mode = 1
+properties/10/replication_mode = 2
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 16
@@ -554,7 +551,7 @@ offset_right = 24.5
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 50
 text = "1234567890"
 horizontal_alignment = 1

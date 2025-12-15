@@ -5,7 +5,7 @@ extends CharacterBody3D
 var SPEED
 @onready var staRecover = GlobalVar.staRecover if GlobalVar.balancingMode else 0.35
 @onready var staUsage = GlobalVar.staUsage if GlobalVar.balancingMode else 1.
-@export var sensivity = 300
+@export var SENSIVITY = 300
 
 
 @onready var defaultCameraPosition = $CameraPivot/Camera3D.position
@@ -15,7 +15,7 @@ var SPEED
 @onready var progressBar:ProgressBar = $PlayerUI/statusContainer/ProgressBar
 @onready var unabletoRoll:Label = $PlayerUI/statusContainer/unableToRoll
 @onready var unableToRun:Label = $PlayerUI/statusContainer/UnableToRun
-@onready var nickname:Label3D = $Nickname
+@onready var info_tag:SubViewport = $Info/SubViewport
 
 @onready var sprite = $Sprite
 @export var stamina:float
@@ -28,6 +28,10 @@ var modGREEN = 1*(stamina)/100
 var t_passed = 0
 var new_pos_fixed = Vector2(0,0)
 
+const JOY_DEADZONE = 0.1
+const JOY_AXIS_RESCALE = 1.0/(1.0-JOY_DEADZONE)
+const JOY_ROTATION_MULTIPLIER = 200.0 * PI / 180.0
+
 var player_info = {}
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -38,13 +42,23 @@ func _enter_tree() -> void:
 
 
 func _ready():
-	if is_multiplayer_authority():
-		camera.make_current()
-		nickname.modulate = player_info["color"]
-		nickname.text = player_info["name"]
-		nickname.visible = false
+	#print_debug(nickname)
+	if not Lobby.is_multiplayer_enabled:
+		info_tag.get_parent().visible = false
+		pass
 	else:
-		$PlayerUI/statusContainer.visible = false
+		if is_multiplayer_authority():
+			var a:Label
+			camera.make_current()
+			info_tag.get_node("ColorRect").modulate = player_info["color"]
+			info_tag.get_node("Nickname").modulate.a = 1.0
+			info_tag.get_node("Nickname").text = player_info["name"]
+			info_tag.get_parent().visible = false
+		else:
+			$PlayerUI/statusContainer.visible = false
+		
+		
+		
 	$arma.visible = false
 	#$arma.set_process(false)
 	$arma/armaArea/armaCollision.disabled = true
@@ -55,10 +69,12 @@ func _ready():
 	unabletoRoll.visible = not mayTheChickenRoll
 	unableToRun.visible = not mayTheChickenRun
 	stamina = 100
+	
 
 
 
 func _physics_process(delta):	
+	if Lobby.is_multiplayer_enabled and not is_multiplayer_authority(): return
 	# Node2D.get_mouse_global_position()
 	# get_viewport().warp_mouse(new_pos)
 	var screen_pos = camera.unproject_position(global_position + Vector3(0, -0.2-$CollisionShape3D.shape.size.y/2, 0)) 
@@ -97,7 +113,46 @@ func _physics_process(delta):
 		
 	progressBar.modulate = Color(modRED,modGREEN,0)
 	
+	#if move_and_collide():
+		#pass
+	move_and_slide()
+	#nickname.position.x = position.x
+	#nickname.position.z = position.z
+	
+	if Input.is_action_pressed("zoom_in"):
+		$CameraPivot/Camera3D.position.y -= 0.1
+		$CameraPivot/Camera3D.position.z -= 1.0
+	if Input.is_action_pressed("zoom_out"):
+		$CameraPivot/Camera3D.position.y += 0.1
+		$CameraPivot/Camera3D.position.z += 1.0
+			
+	if Input.get_connected_joypads().size() == 0:
+		return
+		
+	var xAxis = Input.get_joy_axis(0, 2)
+	if abs(xAxis) > JOY_DEADZONE:
+		if xAxis >0:
+			xAxis = (xAxis-JOY_DEADZONE) * JOY_AXIS_RESCALE
+		else:
+			xAxis = (xAxis+JOY_DEADZONE) * JOY_AXIS_RESCALE
+		rotation.y -= xAxis*10/SENSIVITY
+		#$CameraPivot.rotate_object_local(Vector3.UP, -xAxis * delta * JOY_ROTATION_MULTIPLIER)
+		
+	var yAxis = Input.get_joy_axis(0, 3)
+	if abs(yAxis) > JOY_DEADZONE:
+		if yAxis >0:
+			yAxis = (yAxis-JOY_DEADZONE) * JOY_AXIS_RESCALE
+		else:
+			yAxis = (yAxis+JOY_DEADZONE) * JOY_AXIS_RESCALE
+		$CameraPivot.rotation.x -= yAxis*10/SENSIVITY
+		$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-65),deg_to_rad(0))
+		
+		
+
+	
 func _input(event):
+			
+	if Lobby.is_multiplayer_enabled and not is_multiplayer_authority(): return
 
 	if Input.is_action_just_pressed("ui_attack") and is_on_floor():
 		$arma/animacao.play("attack")
@@ -120,17 +175,17 @@ func _input(event):
 		
 		
 	if event is InputEventMouseMotion:
-		rotation.y -= event.relative.x/sensivity
-		$CameraPivot.rotation.x -= event.relative.y/sensivity
+		rotation.y -= event.relative.x/SENSIVITY
+		$CameraPivot.rotation.x -= event.relative.y/SENSIVITY
 		#if not aimPressed:
 		$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-65),deg_to_rad(0))
 		#print_debug(rotation.y)
-	elif event is InputEventJoypadMotion and abs(event.axis_value)>0.05:
-		#print_debug(event.axis)
-		#print_debug(event.axis_value)
-		if event.axis == 2:
-			rotation.y -= event.axis_value*10/sensivity
-		elif event.axis == 3:
-			$CameraPivot.rotation.x -= event.axis_value*10/sensivity
-			$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-65),deg_to_rad(0))
+	#elif event is InputEventJoypadMotion and abs(event.axis_value)>0.1:
+		##print_debug(event.axis)
+		##print_debug(event.axis_value)
+		#if event.axis == 2:
+			#rotation.y -= event.axis_value*10/SENSIVITY
+		#elif event.axis == 3:
+			#$CameraPivot.rotation.x -= event.axis_value*10/SENSIVITY
+			#$CameraPivot.rotation.x = clamp($CameraPivot.rotation.x, deg_to_rad(-65),deg_to_rad(0))
 		

@@ -3,6 +3,8 @@ extends Node3D
 @onready var estrela = preload("res://Prefabs/estrela.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	if Lobby.is_multiplayer_enabled and multiplayer.get_unique_id() != 1:
+		$Label.text = "You can keep waiting for your friend or press ESC to go back to the Menu"
 	for i in range(700):
 		var obj:OmniLight3D = estrela.instantiate()
 		add_child(obj)
@@ -12,8 +14,19 @@ func _ready():
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if Input.is_action_just_pressed("ui_cancel"):
+# Called every frame. 'delta' is the elapsed time since the previous frame
+
+func _input(event: InputEvent) -> void:
+	if Lobby.is_multiplayer_enabled and multiplayer.get_unique_id() != 1:
+		if event.is_action_pressed("ui_cancel"):
+			get_tree().change_scene_to_file("res://Scenes/Menu_Inicial.tscn")
+			return
+	elif Lobby.is_multiplayer_enabled:
+		if event.is_action_pressed("ui_cancel"):
+			Lobby.load_game.rpc("res://Scenes/game.tscn")
+			return
+		
+	
+	if Input.is_action_pressed("ui_cancel"):
 		get_tree().change_scene_to_file("res://Scenes/game.tscn")
 	pass

@@ -268,8 +268,8 @@ offset_top = 0.0
 offset_bottom = 40.0
 grow_vertical = 1
 
-[connection signal="pressed" from="StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="text_changed" from="varsContainer/altura/inputAltura" to="." method="_on_input_altura_text_changed"]
 [connection signal="text_changed" from="varsContainer/largura/inputLargura" to="." method="_on_input_largura_text_changed"]
 [connection signal="text_changed" from="varsContainer/nCaixas/inputCaixas" to="." method="_on_input_caixas_text_changed"]

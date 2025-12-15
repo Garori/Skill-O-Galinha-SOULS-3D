@@ -23,7 +23,7 @@ var players = {}
 # before the connection is made. It will be passed to every other peer.
 # For example, the value of "name" can be set to something the player
 # entered in a UI scene.
-var player_info = {"name": "name", "color": Color(randf(),randf(),randf())}
+var player_info = {"name": "name", "color": Color(randf_range(0,0.5),randf_range(0,0.5),randf_range(0,0.5))}
 
 var players_loaded = 0
 
@@ -37,7 +37,7 @@ func _ready():
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
 
-func join_game(nickname:String, address := "", ):
+func join_game(nickname:String, address := ""):
 	player_info["name"] = nickname
 	if address.is_empty():
 		address = DEFAULT_SERVER_IP
@@ -100,9 +100,8 @@ func _add_new_player_label(new_player_info):
 	var card := Label.new()
 	card.text = new_player_info["name"]
 	card.add_theme_font_size_override("font_size", 24)
-	var new_color = Color(1.0,1.0,1.0)-new_player_info["color"]
+	var new_color = new_player_info["color"] + Color(0.5,0.5,0.5)
 	new_color.a = 1.0
-	print(new_color)
 	card.add_theme_color_override("font_color", new_color)
 	card.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	card.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

@@ -15,9 +15,10 @@ func _ready() -> void:
 
 
 func _on_server_button_down() -> void:
+	print(nickname.text)
 	Lobby.create_game(nickname.text)
 	var error = http_request.request("https://icanhazip.com/")
-	waiting = [true, false]
+	#waiting = [true, false]
 	if error != OK:
 		push_error("An error occurred in the HTTP request.")
 		waiting = [false, false]
@@ -40,7 +41,7 @@ func _on_find_ip_button_down() -> void:
 	
 	#OS.shell_open("https://icanhazip.com/")
 
-func _http_request_completed(result, response_code, headers, body):
+func _http_request_completed(_result, response_code, headers, body):
 	print("---------- requisicao ------------")
 	print(response_code)
 	print(headers)
@@ -62,7 +63,7 @@ func _http_request_completed(result, response_code, headers, body):
 		else:
 			last_timestamp = int(response)
 		
-		print(last_dont_read)
+		#print(last_dont_read)
 		
 		if waiting[0]:
 			waiting[0] = false
@@ -109,7 +110,7 @@ func _http_request_completed(result, response_code, headers, body):
 
 
 func _on_nickname_text_changed(text: String) -> void:
-	print_debug(text)
+	#print_debug(text)
 	if text != "":
 		$menuContainer/Server.disabled = false
 		$menuContainer/Client.disabled = false
@@ -121,7 +122,7 @@ func _paste_server(button):
 	pass
 
 
-func _on_ip_text_changed(text: String) -> void:
+func _on_ip_text_changed(_text: String) -> void:
 	#if text != "":
 		#$menuContainer/Server.disabled = false
 		#$menuContainer/Join.disabled = false

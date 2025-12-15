@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c4t4y814ln5t8"]
+[gd_scene load_steps=11 format=3 uid="uid://c4t4y814ln5t8"]
 
 [ext_resource type="Script" uid="uid://bxm6ewrj326lh" path="res://Scripts/objetivos.gd" id="1_wsat7"]
 [ext_resource type="Texture2D" uid="uid://dl057cptrixj7" path="res://Assets/Images/brown-texture.jpg" id="2_kh26e"]
@@ -26,6 +26,14 @@ material = SubResource("StandardMaterial3D_5g0wt")
 size = Vector2(10, 10)
 center_offset = Vector3(0, -0.4, 0)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_e2ci3"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [node name="Caixa" type="RigidBody3D"]
 collision_mask = 21
 mass = 1000.0
@@ -50,5 +58,8 @@ shape = SubResource("BoxShape3D_3n14w")
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 visible = false
 mesh = SubResource("PlaneMesh_dkupj")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_e2ci3")
 
 [connection signal="area_entered" from="caixaArea" to="." method="_on_caixa_area_area_entered"]

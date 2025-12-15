@@ -1,6 +1,6 @@
 extends Node3D
 
-const player = preload("res://Prefabs/player.tscn")
+const galinha = preload("res://Prefabs/player.tscn")
 const wall = preload("res://Prefabs/wall.tscn")
 const ground = preload("res://Prefabs/ground.tscn")
 
@@ -23,25 +23,31 @@ func _ready():
 	
 	if Lobby.is_multiplayer_enabled:
 		multiplayer_spawner = $MultiplayerSpawner
-		Lobby.player_loaded.rpc_id(1) # Tell the server that this peer has loaded.
-		return
+		if not is_multiplayer_authority():
+			Lobby.player_loaded.rpc_id(1) # Tell the server that this peer has loaded.
+			return
+	else:
+		var player:Object = galinha.instantiate()
+		add_child(player)
+		player.position = Levels.generate_spwn_point(0)
 		
 	#var currentLevel = Levels.levels["1"]
 	#rooms_creator(currentLevel)
 	#var parameters = JSON.parse_string(FileAccess.get_file_as_string("res://Others/parameters.json"))
-	var player:Object = player.instantiate()
-	add_child(player)
-	player.position = Levels.generate_spwn_point(0)
 	
 	Levels.objectives_spawner(self)
 	
 	Levels.enemies_spawner(self)
+	
+	if Lobby.is_multiplayer_enabled:
+		Lobby.player_loaded.rpc_id(1) # Tell the server that this peer has loaded.
+		return
 		
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):	
-	if Input.is_action_just_pressed("ui_cancel"):
+func _input(event: InputEvent) -> void:	
+	if event.is_action_pressed("ui_cancel"):
 		get_tree().change_scene_to_file("res://Scenes/Menu_Inicial.tscn")
 	
 
@@ -53,18 +59,26 @@ func start_game():
 	# All peers are ready to receive RPCs in this scene.
 	pass
 
-
+@rpc("any_peer","call_local","reliable"	)
 func points_counter():
 	points += 1
-	if points == nObjectives:
+	print_debug("%s pts de %s " % [points,nObjectives])
+	#print_debug(nObjectives)
+	if points >= nObjectives:
 		if Levels.current_level_num < len(Levels.levels):
-			Levels.set_current_level(Levels.current_level_num+1)
+			Levels.set_current_level.rpc(Levels.current_level_num+1)
+			if Lobby.is_multiplayer_enabled:
+				Lobby.load_game.rpc("res://Scenes/next_level.tscn")
+				return
 			get_tree().change_scene_to_file("res://Scenes/next_level.tscn")
 		else:
+			if Lobby.is_multiplayer_enabled:
+				Lobby.load_game.rpc("res://Scenes/vitoria.tscn")
+				return
 			get_tree().change_scene_to_file("res://Scenes/vitoria.tscn")
 	
 
-#
+## INUTILIZADDO
 #func generate_spwn_point(tipo:int, level):
 	#var spwnPoint = Vector3(numero.randf_range((-level["x_tam"]/2)+1, (level["x_tam"]/2)-1),0.5,numero.randf_range((-level["z_tam"]/2)+1, (level["z_tam"]/2))-1)
 	##print_debug(localizacoes)
@@ -169,11 +183,11 @@ func rooms_creator(level):
 			#TODO Modifica tamanhos x ou z dependendo de nWall e move dependendo de k
 			if i<2:
 				mesh.size = Vector2(level["x_tam"]/nWalls,3)
-				parede.get_child(0).get_child(0).shape.size = Vector3(0.01,3,level["x_tam"]/nWalls)
+				parede.get_child(0).get_child(0).shape.size = Vector3(1.0,3,level["x_tam"]/nWalls)
 				#print_debug(parede.get_child(0).get_child(0).shape.size)
 			else:
 				mesh.size = Vector2(level["z_tam"]/nWalls,3)
-				parede.get_child(0).get_child(0).shape.size = Vector3(0.01,3,level["z_tam"]/nWalls)
+				parede.get_child(0).get_child(0).shape.size = Vector3(1.0,3,level["z_tam"]/nWalls)
 				#print_debug(parede.get_child(0).get_child(0).shape.size)
 			parede.mesh = mesh
 			var material:StandardMaterial3D = StandardMaterial3D.new()

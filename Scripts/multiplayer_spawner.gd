@@ -4,7 +4,7 @@ extends MultiplayerSpawner
 var player_prefab = preload("res://Prefabs/player.tscn")
 
 func _ready() -> void:
-	#add_spawnable_scene("res://Prefabs/player.tscn")
+	add_spawnable_scene("res://Prefabs/player.tscn")
 	set_spawn_function(_spawner)
 
 

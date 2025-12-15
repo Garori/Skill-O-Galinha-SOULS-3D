@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://3s2s3mtnmqp"]
+[gd_scene load_steps=29 format=3 uid="uid://3s2s3mtnmqp"]
 
 [ext_resource type="Script" uid="uid://d1ji5hd55jsvc" path="res://Scripts/Galinha.gd" id="1_wy4ea"]
 [ext_resource type="Texture2D" uid="uid://dtvgg2me15f1n" path="res://Assets/Images/chicken-poster-Sheet.png" id="2_tgblj"]
@@ -346,9 +346,6 @@ font_color = Color(1, 0, 0, 1)
 font_size = 8
 font_color = Color(1, 0, 0, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_08u7w"]
-viewport_path = NodePath("Info/SubViewport")
-
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_08u7w"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
@@ -368,28 +365,25 @@ properties/4/replication_mode = 1
 properties/5/path = NodePath(".:rotation")
 properties/5/spawn = true
 properties/5/replication_mode = 1
-properties/6/path = NodePath("arma/animacao:current_animation")
+properties/6/path = NodePath("Nickname:text")
 properties/6/spawn = true
 properties/6/replication_mode = 1
-properties/7/path = NodePath("arma/animacao:active")
+properties/7/path = NodePath("Nickname:modulate")
 properties/7/spawn = true
 properties/7/replication_mode = 1
-properties/8/path = NodePath("arma:visible")
+properties/8/path = NodePath("arma/animacao:current_animation")
 properties/8/spawn = true
 properties/8/replication_mode = 1
-properties/9/path = NodePath("Info/SubViewport/Nickname:text")
+properties/9/path = NodePath("arma/animacao:active")
 properties/9/spawn = true
-properties/9/replication_mode = 2
-properties/10/path = NodePath("Info/SubViewport/ColorRect:modulate")
+properties/9/replication_mode = 1
+properties/10/path = NodePath("arma:visible")
 properties/10/spawn = true
 properties/10/replication_mode = 1
-properties/11/path = NodePath("Info/SubViewport/Nickname:theme_override_colors/font_color")
-properties/11/spawn = true
-properties/11/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 16
-collision_mask = 69
+collision_mask = 73
 input_ray_pickable = false
 axis_lock_linear_y = true
 axis_lock_angular_y = true
@@ -412,14 +406,14 @@ animation = &"default_dir"
 shape = SubResource("BoxShape3D_i7iyj")
 
 [node name="CameraPivot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.873228, 0.48731104, 0, -0.48731104, 0.873228, 0, 0, -1)
+transform = Transform3D(1, 0, 0, 0, 0.873228, 0.487311, 0, -0.487311, 0.873228, 0, 0, -1)
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(1, 0, 0, 0, 0.985307, 0.170794, 0, -0.170794, 0.985307, 0, 2.49997, 25)
 fov = 55.2839
 
 [node name="arma" type="Node3D" parent="."]
-transform = Transform3D(-0.96592486, 0.2588221, -9.369336e-07, 0, -3.6199897e-06, -1, -0.2588221, -0.96592486, 3.4966388e-06, 0, 0, 0)
+transform = Transform3D(-0.9659249, 0.2588221, -9.369336e-07, 0, -3.61999e-06, -1, -0.2588221, -0.9659249, 3.4966388e-06, 0, 0, 0)
 
 [node name="animacao" type="AnimationPlayer" parent="arma"]
 libraries = {
@@ -440,6 +434,17 @@ collision_layer = 32
 [node name="armaCollision" type="CollisionShape3D" parent="arma/armaArea"]
 transform = Transform3D(1, 2.98023e-08, 4.77485e-12, -2.98023e-08, 1, 1.61435e-11, 0, 3.41061e-13, 1, 0, 0, 0.00361937)
 shape = SubResource("BoxShape3D_1d7vq")
+
+[node name="Nickname" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.795, 0)
+billboard = 1
+no_depth_test = true
+alpha_antialiasing_mode = 1
+texture_filter = 0
+modulate = Color(0, 0, 0, 1)
+text = "NOME"
+font_size = 200
+outline_size = 5
 
 [node name="PlayerUI" type="Control" parent="."]
 layout_mode = 3
@@ -512,53 +517,7 @@ metadata/_custom_type_script = "uid://dxfguw3jeo6x0"
 script = ExtResource("9_kgmex")
 metadata/_custom_type_script = "uid://seq5w2p106t6"
 
-[node name="Info" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.685293, 0)
-billboard = 1
-no_depth_test = true
-texture = SubResource("ViewportTexture_08u7w")
-
-[node name="SubViewport" type="SubViewport" parent="Info"]
-transparent_bg = true
-size = Vector2i(300, 100)
-
-[node name="ColorRect" type="ColorRect" parent="Info/SubViewport"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 0.54509807, 0.23137255, 1)
-
-[node name="Nickname_" type="Label3D" parent="Info/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.795, 0)
-visible = false
-billboard = 1
-no_depth_test = true
-alpha_antialiasing_mode = 1
-texture_filter = 0
-modulate = Color(0, 0, 0, 1)
-text = "NOME"
-font_size = 200
-outline_size = 5
-
-[node name="Nickname" type="Label" parent="Info/SubViewport"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -24.5
-offset_top = -11.5
-offset_right = 24.5
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 50
-text = "1234567890"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_08u7w")
+
+[node name="SubViewport" type="SubViewport" parent="."]

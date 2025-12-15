@@ -27,7 +27,7 @@ func walk(input_dir):
 		player.velocity.x = direction.x * player.SPEED
 		player.velocity.z = direction.z * player.SPEED
 	
-	player.move_and_slide()
+	#player.move_and_slide()
 
 
 func physics_update(_delta: float):
