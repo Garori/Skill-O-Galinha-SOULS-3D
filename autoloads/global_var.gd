@@ -10,8 +10,9 @@ var pontos:int = 0
 var fs = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	push_error("aaaaa")
 	pass # Replace with function body.
-	
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_fullscreen") and not fs:
 		fs = true

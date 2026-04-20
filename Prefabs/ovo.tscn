@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cssud0o3iikya"]
+
+[ext_resource type="Texture2D" uid="uid://dsblrkxjmu5pl" path="res://Assets/Images/ovo.png" id="1_fhiv6"]
+
+[node name="Node3D" type="Sprite3D" unique_id=1763032359]
+transform = Transform3D(0.9994865, 0.027476795, 0.01648194, -0.027550392, 0.9996114, 0.0042548324, -0.016358621, -0.004706749, 0.9998551, 0, 0, 0)
+billboard = 2
+alpha_cut = 2
+texture_filter = 4
+texture = ExtResource("1_fhiv6")

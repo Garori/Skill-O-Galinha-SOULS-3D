@@ -1,6 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://cyf8iyr7dvtaw"]
+[gd_scene format=3 uid="uid://cyf8iyr7dvtaw"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k3qxw"]
+noise_type = 4
+seed = 6
+frequency = 0.0723
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_llku6"]
+noise = SubResource("FastNoiseLite_k3qxw")
+as_normal_map = true
+bump_strength = 5.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_box11"]
+albedo_color = Color(0, 0.5568628, 0, 1)
+albedo_texture = SubResource("NoiseTexture2D_llku6")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wnct1"]
 material = SubResource("StandardMaterial3D_box11")
@@ -9,12 +21,12 @@ size = Vector2(100, 100)
 [sub_resource type="BoxShape3D" id="BoxShape3D_k6bre"]
 size = Vector3(100, 0.01, 100)
 
-[node name="ground" type="MeshInstance3D"]
+[node name="ground" type="MeshInstance3D" unique_id=332347730]
 mesh = SubResource("PlaneMesh_wnct1")
 metadata/_edit_lock_ = true
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=828688031]
 collision_mask = 21
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=891620897]
 shape = SubResource("BoxShape3D_k6bre")

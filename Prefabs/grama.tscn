@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cohl6wn86ki4s"]
+
+[ext_resource type="Texture2D" uid="uid://crwbp3eq6v4ll" path="res://Assets/Images/grass/nova_grama2.png" id="1_vp5qs"]
+
+[node name="Grama" type="Sprite3D" unique_id=1657217111]
+centered = false
+offset = Vector2(-32, 0)
+billboard = 2
+alpha_cut = 1
+texture_filter = 4
+texture = ExtResource("1_vp5qs")
+region_enabled = true
+region_rect = Rect2(0, 7.971382, 64, 56.028618)

@@ -17,10 +17,10 @@ var multiplayer_spawner
 
 func _ready():
 	nObjectives = Levels.current_level["nCaixas"]
-	
+
 	rooms_creator(Levels.current_level)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	
+
 	if Lobby.is_multiplayer_enabled:
 		multiplayer_spawner = $MultiplayerSpawner
 		if not is_multiplayer_authority():
@@ -30,26 +30,28 @@ func _ready():
 		var player:Object = galinha.instantiate()
 		add_child(player)
 		player.position = Levels.generate_spwn_point(0)
-		
+
 	#var currentLevel = Levels.levels["1"]
 	#rooms_creator(currentLevel)
 	#var parameters = JSON.parse_string(FileAccess.get_file_as_string("res://Others/parameters.json"))
-	
+
 	Levels.objectives_spawner(self)
-	
+
 	Levels.enemies_spawner(self)
-	
+
+	Levels.grass_spawner(self)
+
 	if Lobby.is_multiplayer_enabled:
 		Lobby.player_loaded.rpc_id(1) # Tell the server that this peer has loaded.
 		return
-		
-	
+
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _input(event: InputEvent) -> void:	
+func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().change_scene_to_file("res://Scenes/Menu_Inicial.tscn")
-	
+
 
 func start_game():
 	print_debug("todos os jogadores estão prontos")
@@ -76,7 +78,7 @@ func points_counter():
 				Lobby.load_game.rpc("res://Scenes/vitoria.tscn")
 				return
 			get_tree().change_scene_to_file("res://Scenes/vitoria.tscn")
-	
+
 
 ## INUTILIZADDO
 #func generate_spwn_point(tipo:int, level):
@@ -154,7 +156,7 @@ func rooms_creator(level):
 		#print_debug(auxiliar)
 		for z in range(auxiliar.size() -1):
 			rooms_dict[global_rooms_counter][i][z] = {"parede0":"","parede1":""}
-			
+
 		var contador1 = 0
 		var contador2 = 0
 		for k in auxiliar:
@@ -164,15 +166,15 @@ func rooms_creator(level):
 			#var aux:float = nWalls/2.0 + k-1
 			var parede:Object = wall.instantiate()
 			#print_debug(parede.get_child(0).get_child(0).shape)
-			#cria uma parede em 
-			
+			#cria uma parede em
+
 			var mesh:QuadMesh = QuadMesh.new()
 			mesh.orientation = 0
-			
+
 			#parede.mesh.set_surface_override_material(0, material)
 			#QuadMesh
 			#MeshInstance3D.set_surface_override_material(0, new() StandardMaterial3D)
-			
+
 			#parede.mesh.material.albedo_color = Color(rng.randf_range(0,1),rng.randf_range(0,1),rng.randf_range(0,1))
 			parede.position.x = (k*tmp_thing[i][1]*level["x_tam"]/(nWalls*(2.0/par)))+(tmp_thing[i][0]*level["x_tam"]/2.0)
 			parede.position.y = 1.5
@@ -205,7 +207,7 @@ func rooms_creator(level):
 				contador2 +=1
 		contador2 = 0
 		contador1 += 1
-		
+
 #func yet_another_room_creator(level):
 	#var tmp_thing = [[-1,0],[1,0],[0,-1],[0,1]]
 	#var chao:Object = ground.instantiate()

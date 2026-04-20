@@ -11,9 +11,13 @@ func _physics_process(delta):
 		#print_debug("COLICIU COM %S" % colisao)
 		SPEED = SPEED.bounce(colisao.get_normal())
 		#print(colisao.get_collider().get_collision_layer())
-		if colisao.get_collider().get_collision_layer() == 16: #valor da layer da galinha
+		var colisor = colisao.get_collider()
+		if colisor.get_collision_layer() == 16: #valor da layer da galinha
 			#if Lobby.is_multiplayer_enabled
-			get_tree().change_scene_to_file("res://Scenes/derrota.tscn")
+			if colisor.ovo != null:
+				colisor.tp_to_ovo()
+			else:
+				get_tree().change_scene_to_file("res://Scenes/derrota.tscn")
 		colisao = null
 
 

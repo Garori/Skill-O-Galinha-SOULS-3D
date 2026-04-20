@@ -29,7 +29,7 @@ func _physics_process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if current_state:
 		current_state.handle_input(event)
-	
+
 
 func on_child_transition(state, new_state_name):
 	if state != current_state:
@@ -42,7 +42,7 @@ func on_child_transition(state, new_state_name):
 
 	if !new_state:
 		return
-	
+
 	if current_state:
 		current_state.exit()
 
