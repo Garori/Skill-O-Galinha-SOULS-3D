@@ -11,7 +11,7 @@ var numero = RandomNumberGenerator.new()
 var rooms_dict:Dictionary = {}
 var global_rooms_counter = -1
 
-var multiplayer_spawner
+var multiplayer_spawner:MultiplayerSpawner
 
 #@onready var currentLevel = Levels.levels[str(GlobalVar.currentLevel)]
 
@@ -20,12 +20,15 @@ func _ready():
 	
 	rooms_creator(Levels.current_level)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	
 	if Lobby.is_multiplayer_enabled:
-		multiplayer_spawner = $MultiplayerSpawner
-		if not is_multiplayer_authority():
-			Lobby.player_loaded.rpc_id(1) # Tell the server that this peer has loaded.
-			return
+		print_debug("cliente %s multiplayer authority? %s" % [multiplayer.get_unique_id(), is_multiplayer_authority()])
+		if is_multiplayer_authority():
+			multiplayer_spawner = $MultiplayerSpawner
+		#push_warning(multiplayer_spawner.get_spawnable_scene_count())
+		#push_warning("id = %s \n multiplayerspawner = \n %s" % [multiplayer.get_unique_id(), multiplayer_spawner])
+		#if not multiplayer.is_server():
+			#Lobby.player_loaded.rpc_id(1) # Tell the server that this peer has loaded.
+			#return
 	else:
 		var player:Object = galinha.instantiate()
 		add_child(player)
@@ -34,14 +37,13 @@ func _ready():
 	#var currentLevel = Levels.levels["1"]
 	#rooms_creator(currentLevel)
 	#var parameters = JSON.parse_string(FileAccess.get_file_as_string("res://Others/parameters.json"))
-	
-	Levels.objectives_spawner(self)
-	
-	Levels.enemies_spawner(self)
-	
+	if multiplayer.is_server() or not Lobby.is_multiplayer_enabled:
+		Levels.objectives_spawner(self)
+		
+		Levels.enemies_spawner(self)
+		
 	if Lobby.is_multiplayer_enabled:
 		Lobby.player_loaded.rpc_id(1) # Tell the server that this peer has loaded.
-		return
 		
 	
 
@@ -52,12 +54,12 @@ func _input(event: InputEvent) -> void:
 	
 
 func start_game():
+	if not multiplayer.is_server(): return
 	print_debug("todos os jogadores estão prontos")
 	for player in Lobby.players:
 		print(Lobby.players[player])
 		multiplayer_spawner.spawn([player,Lobby.players[player]])
 	# All peers are ready to receive RPCs in this scene.
-	pass
 
 @rpc("any_peer","call_local","reliable"	)
 func points_counter():

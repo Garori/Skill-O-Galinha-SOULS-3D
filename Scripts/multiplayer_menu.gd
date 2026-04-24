@@ -46,6 +46,7 @@ func _http_request_completed(_result, response_code, headers, body):
 	print(response_code)
 	print(headers)
 	print(waiting)
+	# dontpad
 	if "Server: Caddy" in headers and not waiting[1]:
 		print("entrei")
 		var json = JSON.new()
@@ -94,12 +95,13 @@ func _http_request_completed(_result, response_code, headers, body):
 				$servers_container/VBoxContainer.add_child(n_button)
 				
 				
-	elif "Server: cloudflare" in headers: # resposta do ICANHAZIP
+	# ICANHAZIP
+	elif "Server: cloudflare" in headers: 
 		ip_addr = body.get_string_from_utf8()
 		DisplayServer.clipboard_set(ip_addr)
 		var alert = preload("res://Prefabs/UI/alert.tscn").instantiate()
 		alert.set_anchors_and_offsets_preset(Control.LayoutPreset.PRESET_CENTER_BOTTOM, Control.LayoutPresetMode.PRESET_MODE_KEEP_SIZE, 0)
-		get_parent().add_child(alert)
+		get_node("/root/MainMenu").add_child(alert)
 		print_debug("ip copiado!")
 		if waiting[0]:
 			var error = http_request.request("https://api.dontpad.com/condepintofonseca/arena_game.body.json?lastModified=0")

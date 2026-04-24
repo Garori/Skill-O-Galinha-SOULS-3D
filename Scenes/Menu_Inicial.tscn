@@ -27,7 +27,7 @@ size_flags_vertical = 2
 color = Color(0.631373, 0.231373, 1, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="."]
+[node name="Intructions" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -58,31 +58,6 @@ offset_bottom = 283.0
 grow_horizontal = 2
 texture = ExtResource("1_3l0bs")
 stretch_mode = 2
-
-[node name="StartGame" type="Button" parent="." groups=["UI"]]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -171.0
-offset_top = -133.0
-offset_right = -81.0
-offset_bottom = -75.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "Jogar!"
-
-[node name="multiplayerMenu" parent="." groups=["UI"] instance=ExtResource("3_4pqit")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 0
-offset_left = 1152.0
-offset_top = 525.0
-offset_right = 1152.0
-offset_bottom = 525.0
 
 [node name="varsContainer" type="VBoxContainer" parent="."]
 visible = false
@@ -250,26 +225,39 @@ offset_right = 200.0
 offset_bottom = 66.0
 text = "Balancing mode?"
 
-[node name="onlineMode" type="CheckBox" parent="."]
-layout_mode = 0
-offset_left = 1075.0
-offset_top = 652.0
-offset_right = 1234.0
-offset_bottom = 683.0
-text = "Play Online"
-
 [node name="ConnectedPlayers" parent="." groups=["UI"] instance=ExtResource("4_gxdww")]
 unique_name_in_owner = true
-layout_mode = 0
-anchors_preset = 0
-anchor_top = 0.0
-anchor_bottom = 0.0
-offset_top = 0.0
-offset_bottom = 40.0
-grow_vertical = 1
+layout_mode = 1
 
-[connection signal="pressed" from="StartGame" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="StartGame" to="." method="_on_start_game_pressed"]
+[node name="Game_start_things" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -151.0
+offset_top = -104.0
+offset_right = -35.0
+offset_bottom = -38.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
+
+[node name="multiplayerMenu" parent="Game_start_things" groups=["UI"] instance=ExtResource("3_4pqit")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="StartGame" type="Button" parent="Game_start_things" groups=["UI"]]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Jogar!"
+
+[node name="onlineMode" type="CheckBox" parent="Game_start_things"]
+layout_mode = 2
+text = "Play Online"
+
 [connection signal="text_changed" from="varsContainer/altura/inputAltura" to="." method="_on_input_altura_text_changed"]
 [connection signal="text_changed" from="varsContainer/largura/inputLargura" to="." method="_on_input_largura_text_changed"]
 [connection signal="text_changed" from="varsContainer/nCaixas/inputCaixas" to="." method="_on_input_caixas_text_changed"]
@@ -279,4 +267,6 @@ grow_vertical = 1
 [connection signal="text_changed" from="varsContainer/walkingSPEED/inputWalkingSPEED" to="." method="_on_input_walking_speed_text_changed"]
 [connection signal="text_changed" from="varsContainer/runningSPEED/inputRunningSPEED" to="." method="_on_input_running_speed_text_changed"]
 [connection signal="toggled" from="balancingMode" to="." method="_on_balancing_mode_toggled"]
-[connection signal="toggled" from="onlineMode" to="." method="_on_online_mode_toggled"]
+[connection signal="pressed" from="Game_start_things/StartGame" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Game_start_things/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="toggled" from="Game_start_things/onlineMode" to="." method="_on_online_mode_toggled"]

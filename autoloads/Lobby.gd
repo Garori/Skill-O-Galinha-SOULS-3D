@@ -75,7 +75,7 @@ func remove_multiplayer_peer():
 # do Lobby.load_game.rpc(filepath)
 @rpc("call_local", "reliable")
 func load_game(game_scene_path):
-	get_tree().change_scene_to_file(game_scene_path)
+	get_tree().change_scene_to_file.call_deferred(game_scene_path)
 
 
 # Every peer will call this when they have loaded the game scene.
@@ -84,8 +84,8 @@ func player_loaded():
 	if multiplayer.is_server():
 		players_loaded += 1
 		if players_loaded == players.size():
-			$/root/Game.start_game()
 			players_loaded = 0
+			$/root/Game.start_game()
 
 
 # When a peer connects, send them my player info.
@@ -109,7 +109,7 @@ func _add_new_player_label(new_player_info):
 	new_sb.set_content_margin_all(5.0)
 	new_sb.bg_color = new_player_info["color"]
 	card.add_theme_stylebox_override("normal", new_sb)
-	players_cards.add_child(card)
+	players_cards.get_node("CardsContainer").add_child(card)
 
 
 @rpc("any_peer", "reliable")

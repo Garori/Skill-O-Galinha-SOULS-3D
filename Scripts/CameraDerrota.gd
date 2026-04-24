@@ -12,7 +12,7 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	# Add the gravity.
 	#if not is_on_floor():
 		#velocity.y -= gravity * delta

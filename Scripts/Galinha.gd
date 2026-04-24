@@ -151,13 +151,17 @@ func _physics_process(delta):
 
 	
 func _input(event):
+	
 			
 	if Lobby.is_multiplayer_enabled and not is_multiplayer_authority(): return
+	
+	if event.is_action_pressed("sui_test"):
+		queue_free()
 
-	if Input.is_action_just_pressed("ui_attack") and is_on_floor():
+	if event.is_action_pressed("ui_attack") and is_on_floor():
 		$arma/animacao.play("attack")
 	
-	if Input.is_action_just_pressed("dodge_roll") and is_on_floor() and mayTheChickenRoll:
+	if event.is_action_pressed("dodge_roll") and is_on_floor() and mayTheChickenRoll:
 		$animacao.play("rolamento")
 
 
